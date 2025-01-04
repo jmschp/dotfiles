@@ -57,9 +57,9 @@ stow:
 	@echo "Done"
 
 duti:
- @echo "Setting default applications"
- @duti -v .duti
- @echo "Done"
+	@echo "Setting default applications"
+	@/opt/homebrew/bin/duti -v .duti
+	@echo "Done"
 
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-rust asdf-ruby
 
