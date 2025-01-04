@@ -1,6 +1,6 @@
 SHELL:=/bin/zsh
 
-all: sudo xdg_specs brew ohmyzsh ohmyzsh_plugins stow asdf aws_credentials gpg_keys
+all: sudo xdg_specs brew ohmyzsh ohmyzsh_plugins stow duti asdf aws_credentials gpg_keys
 
 sudo:
 ifndef CI
@@ -54,6 +54,11 @@ ohmyzsh_plugins:
 stow:
 	@echo "Installing dotfiles"
 	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt dot-files
+	@echo "Done"
+
+duti:
+	@echo "Setting default applications"
+	@/opt/homebrew/bin/duti -v .duti
 	@echo "Done"
 
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-rust asdf-ruby
