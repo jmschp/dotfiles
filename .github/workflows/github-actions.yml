@@ -19,6 +19,6 @@ jobs:
       - name: Set ENV file .zshenv
         run: cp dot-files/dot-zshenv ~/.zshenv
       - name: Run Makefile file
-        run: make
+        run: make -d
       - name: Test make results
-        run: make test-all
+        run: make -d test-all
