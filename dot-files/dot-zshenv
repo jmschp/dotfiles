@@ -21,6 +21,7 @@ export AWS_CREDENTIALS_FILE="$XDG_DATA_HOME/aws/credentials"
 export AWS_SHARED_CREDENTIALS_FILE="$AWS_CREDENTIALS_FILE"
 
 # Bundler XDG Base Directory
+# export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle/config"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle/plugins"
