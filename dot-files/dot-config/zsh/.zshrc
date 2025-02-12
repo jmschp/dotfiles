@@ -83,6 +83,7 @@ plugins=(
   npm
   rails
   rake
+  rust
   yarn
   history-substring-search
   zsh-autosuggestions

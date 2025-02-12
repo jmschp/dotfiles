@@ -16,6 +16,8 @@ xdg_specs:
 	@mkdir -p "$(HOME)/.local/state"
 	@mkdir -p "$(HOME)/.local/runtime"
 	@chmod 0700 "$(HOME)/.local/runtime"
+	@mkdir -p "$(XDG_STATE_HOME)/zsh"
+	@mkdir -p "$(XDG_CACHE_HOME)/zsh"
 	@echo "Done"
 
 brew: brew-install brew-formulae brew-casks
@@ -61,6 +63,14 @@ duti:
 	@/opt/homebrew/bin/duti -v .duti
 	@echo "Done"
 
+rust:
+ifndef CI
+	@echo "Installing Rust"
+	@/opt/homebrew/bin/brew link --force rustup
+	@/opt/homebrew/bin/rustup default stable
+	@echo "Done"
+endif
+
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-rust asdf-ruby
 
 asdf-plugins:
@@ -68,7 +78,6 @@ asdf-plugins:
 	@asdf plugin-add alias
 	@asdf plugin-add nodejs
 	@asdf plugin-add python
-	@asdf plugin-add rust
 	@asdf plugin-add ruby
 	@echo "Done"
 
@@ -83,12 +92,6 @@ asdf-python:
 	@asdf install python 2.7.18
 	@asdf install python latest
 	@asdf global python $$(asdf latest python) 2.7.18
-	@echo "Done"
-
-asdf-rust:
-	@echo "Installing rust $$(asdf latest rust)"
-	@asdf install rust latest
-	@asdf global rust $$(asdf latest rust)
 	@echo "Done"
 
 asdf-ruby:
