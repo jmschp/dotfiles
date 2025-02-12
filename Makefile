@@ -71,7 +71,7 @@ ifndef CI
 	@echo "Done"
 endif
 
-asdf: asdf-plugins asdf-nodejs asdf-python asdf-rust asdf-ruby
+asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
 asdf-plugins:
 	@echo "Adding asdf-alias plugin"
@@ -91,6 +91,7 @@ asdf-nodejs:
 asdf-python:
 	@echo "Installing python $$(asdf latest python 2) and $$(asdf latest python 3)"
 	@asdf set --home python $$(asdf latest python 2) $$(asdf latest python 3)
+	@asdf install python
 	@echo "Done"
 
 asdf-ruby:
