@@ -12,7 +12,7 @@ defaults:
     shell: zsh -e {0}
 jobs:
   dotfiles-install:
-    runs-on: macos-15
+    runs-on: macos-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
