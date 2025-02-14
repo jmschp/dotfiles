@@ -32,6 +32,7 @@ endif
 ifdef CI
 	@echo "Updating Brew formulae"
 	@/opt/homebrew/bin/brew update
+	@/opt/homebrew/bin/brew upgrade
 	@echo "Done"
 endif
 
