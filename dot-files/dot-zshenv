@@ -60,7 +60,7 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export EDITOR="code --wait"
 export PAGER="less"
 export LESS="--chop-long-lines --no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
-export RUBY_CONFIGURE_OPTS="--enable-yjit"
+export RUBY_CONFIGURE_OPTS="--enable-yjit=dev"
 export THOR_MERGE="code --wait --merge"
 export THOR_DIFF="code --wait --diff"
 
