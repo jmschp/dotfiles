@@ -81,10 +81,10 @@ asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
 asdf-plugins:
 	@echo "Adding asdf-alias plugin"
-	@asdf plugin-add alias
-	@asdf plugin-add nodejs
-	@asdf plugin-add python
-	@asdf plugin-add ruby
+	@asdf plugin add alias
+	@asdf plugin add nodejs
+	@asdf plugin add python
+	@asdf plugin add ruby
 	@echo "Done"
 
 asdf-nodejs:
