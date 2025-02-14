@@ -29,6 +29,11 @@ ifndef CI
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	@echo "Done"
 endif
+ifdef CI
+	@echo "Updating Brew formulae"
+	@/opt/homebrew/bin/brew update
+	@echo "Done"
+endif
 
 brew-formulae:
 	@echo "Installing Brew formulae"
