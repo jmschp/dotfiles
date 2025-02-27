@@ -88,11 +88,10 @@ asdf-plugins:
 	@echo "Done"
 
 asdf-nodejs:
-	@echo "skipping nodejs installation"
-# @echo "Installing nodejs $$(asdf latest nodejs $$(asdf nodejs resolve lts --latest-available))"
-# @asdf set --home nodejs $$(asdf latest nodejs $$(asdf nodejs resolve lts --latest-available))
-# @asdf install nodejs
-# @echo "Done"
+	@echo "Installing nodejs $$(asdf cmd nodejs resolve lts --latest-available)"
+	@asdf set --home nodejs $$(asdf cmd nodejs resolve lts --latest-available)
+	@asdf install nodejs
+	@echo "Done"
 
 asdf-python:
 	@echo "Installing python $$(asdf latest python 2) and $$(asdf latest python 3)"
