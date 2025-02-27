@@ -16,6 +16,8 @@ xdg_specs:
 	@mkdir -p "$(HOME)/.local/state"
 	@mkdir -p "$(HOME)/.local/runtime"
 	@chmod 0700 "$(HOME)/.local/runtime"
+	@mkdir -p "$(XDG_STATE_HOME)/zsh"
+	@mkdir -p "$(XDG_CACHE_HOME)/zsh"
 	@echo "Done"
 
 brew: brew-install brew-formulae brew-casks
@@ -25,6 +27,12 @@ brew-install:
 ifndef CI
 	@echo "Installing Homebrew"
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	@echo "Done"
+endif
+ifdef CI
+	@echo "Updating Brew formulae"
+	@/opt/homebrew/bin/brew update
+	@/opt/homebrew/bin/brew upgrade
 	@echo "Done"
 endif
 
@@ -61,40 +69,40 @@ duti:
 	@/opt/homebrew/bin/duti -v .duti
 	@echo "Done"
 
-asdf: asdf-plugins asdf-nodejs asdf-python asdf-rust asdf-ruby
+rust:
+ifndef CI
+	@echo "Installing Rust"
+	@/opt/homebrew/bin/brew link --force rustup
+	@/opt/homebrew/bin/rustup default stable
+	@echo "Done"
+endif
+
+asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
 asdf-plugins:
 	@echo "Adding asdf-alias plugin"
-	@asdf plugin-add alias
-	@asdf plugin-add nodejs
-	@asdf plugin-add python
-	@asdf plugin-add rust
-	@asdf plugin-add ruby
+	@asdf plugin add alias
+	@asdf plugin add nodejs
+	@asdf plugin add python
+	@asdf plugin add ruby
 	@echo "Done"
 
 asdf-nodejs:
-	@echo "Installing nodejs $$(asdf latest nodejs $$(asdf nodejs resolve lts --latest-available))"
-	@asdf install nodejs $$(asdf latest nodejs $$(asdf nodejs resolve lts --latest-available))
-	@asdf global nodejs $$(asdf latest nodejs $$(asdf nodejs resolve lts --latest-available))
+	@echo "Installing nodejs $$(asdf cmd nodejs resolve lts --latest-available)"
+	@asdf set --home nodejs $$(asdf cmd nodejs resolve lts --latest-available)
+	@asdf install nodejs
 	@echo "Done"
 
 asdf-python:
-	@echo "Installing python $$(asdf latest python) and 2.7.18"
-	@asdf install python 2.7.18
-	@asdf install python latest
-	@asdf global python $$(asdf latest python) 2.7.18
-	@echo "Done"
-
-asdf-rust:
-	@echo "Installing rust $$(asdf latest rust)"
-	@asdf install rust latest
-	@asdf global rust $$(asdf latest rust)
+	@echo "Installing python $$(asdf latest python 2) and $$(asdf latest python 3)"
+	@asdf set --home python $$(asdf latest python 2) $$(asdf latest python 3)
+	@asdf install python
 	@echo "Done"
 
 asdf-ruby:
-	@echo "Installing ruby $$(asdf latest ruby)"
-	@asdf install ruby latest
-	@asdf global ruby $$(asdf latest ruby)
+	@echo "Installing ruby $$(asdf latest ruby 3)"
+	@asdf set --home ruby $$(asdf latest ruby 3)
+	@asdf install ruby
 	@echo "Done"
 
 aws_credentials: aws_credentials_arqshoah aws_credentials_legado
