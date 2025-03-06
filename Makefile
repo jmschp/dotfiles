@@ -38,13 +38,13 @@ endif
 
 brew-formulae:
 	@echo "Installing Brew formulae"
-	@/opt/homebrew/bin/brew bundle --no-lock --file=homebrew/Brewfile
+	@/opt/homebrew/bin/brew bundle --file=homebrew/Brewfile
 	@echo "Done"
 
 brew-casks:
 ifndef CI
 	@echo "Installing Brew casks"
-	@/opt/homebrew/bin/brew bundle --no-lock --file=homebrew/Caskfile
+	@/opt/homebrew/bin/brew bundle --file=homebrew/Caskfile
 	@echo "Done"
 endif
 
