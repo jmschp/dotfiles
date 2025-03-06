@@ -48,6 +48,11 @@ ifndef CI
 	@echo "Done"
 endif
 
+stow:
+	@echo "Installing dotfiles"
+	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt dot-files
+	@echo "Done"
+
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -57,11 +62,6 @@ ohmyzsh_plugins:
 	@echo "Installing zsh-autosuggestions and zsh-syntax-highlighting plugins"
 	@git clone https://github.com/zsh-users/zsh-autosuggestions $${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-	@echo "Done"
-
-stow:
-	@echo "Installing dotfiles"
-	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt dot-files
 	@echo "Done"
 
 duti:
