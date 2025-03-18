@@ -80,12 +80,11 @@ duti:
 	@echo "Done"
 
 rust:
-ifndef CI
 	@echo "Installing Rust"
 	@/opt/homebrew/bin/brew link --force rustup
 	@/opt/homebrew/bin/rustup default stable
 	@echo "Done"
-endif
+
 
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
