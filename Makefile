@@ -60,11 +60,6 @@ ohmyzsh:
 
 stow-ohmyzsh-custom:
 	@echo "Installing Oh My Zsh custom theme"
-	echo $(ZSH)
-	echo "$(ZDOTDIR)/ohmyzsh"
-	ls -al $(HOME)
-	ls -al $(XDG_CONFIG_HOME)
-	ls -al $(XDG_CONFIG_HOME)/zsh
 	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom --verbose=1 --no-folding --adopt --restow ohmyzsh-custom
 	@echo "Done"
 
