@@ -53,10 +53,10 @@ stow:
 	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
 	@echo "Done"
 
-ohmyzsh:
-	echo "Installing Oh My Zsh"
-	sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-	echo "Done"
+.PHONY: ohmyzsh
+	@echo "Installing Oh My Zsh"
+	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	@echo "Done"
 
 stow-ohmyzsh-custom-theme:
 	@echo "Installing Oh My Zsh custom theme"
