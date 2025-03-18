@@ -152,16 +152,16 @@ test-all: test-stow test-asdf-tools test-aws-credentials test-gpg
 
 test-stow:
 	@echo "Testing dotfiles"
-	@test -L "$(XDG_CONFIG_HOME)/asdf/asdfrc"
-	@test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
-	@test -L "$(XDG_CONFIG_HOME)/aws/config"
-	@test -L "$(XDG_CONFIG_HOME)/git/config"
-	@test -L "$(XDG_CONFIG_HOME)/git/ignore"
-	@test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
-	@test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"
-	@test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
-	@test -L "$(HOME)/.zshenv"
-	@test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
+	test -L "$(XDG_CONFIG_HOME)/asdf/asdfrc"
+	test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
+	test -L "$(XDG_CONFIG_HOME)/aws/config"
+	test -L "$(XDG_CONFIG_HOME)/git/config"
+	test -L "$(XDG_CONFIG_HOME)/git/ignore"
+	test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
+	test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"
+	test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
+	test -L "$(HOME)/.zshenv"
+	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
 	@echo "Done"
 
 test-asdf-tools:
