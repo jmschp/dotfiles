@@ -61,13 +61,17 @@ ohmyzsh:
 
 stow_ohmyzsh_custom_theme:
 	@echo "Installing Oh My Zsh custom theme"
+	echo $(ZSH)
+	echo "$(ZDOTDIR)/ohmyzsh"
+	ls -al $(XDG_CONFIG_HOME)
+	ls -al $(XDG_CONFIG_HOME)/zsh
 	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh --verbose=1 --no-folding --adopt --restow ohmyzsh
 	@echo "Done"
 
 ohmyzsh_plugins:
 	@echo "Installing zsh-autosuggestions and zsh-syntax-highlighting plugins"
-	@git clone https://github.com/zsh-users/zsh-autosuggestions $${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	@git clone https://github.com/zsh-users/zsh-autosuggestions $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-autosuggestions
+	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-syntax-highlighting
 	@echo "Done"
 
 duti:
