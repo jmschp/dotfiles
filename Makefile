@@ -1,6 +1,6 @@
 SHELL:=/bin/zsh
 
-all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti asdf aws-credentials gpg-keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti rust asdf aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -84,7 +84,6 @@ rust:
 	@/opt/homebrew/bin/brew link --force rustup
 	@/opt/homebrew/bin/rustup default stable
 	@echo "Done"
-
 
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
