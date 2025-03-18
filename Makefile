@@ -1,6 +1,6 @@
 SHELL:=/bin/zsh
 
-all: sudo xdg_specs brew stow ohmyzsh stow_ohmyzsh_custom_theme ohmyzsh_plugins duti asdf aws_credentials gpg_keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom-theme ohmyzsh-plugins duti asdf aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -58,7 +58,7 @@ ohmyzsh:
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	@echo "Done"
 
-stow_ohmyzsh_custom_theme:
+stow-ohmyzsh-custom-theme:
 	@echo "Installing Oh My Zsh custom theme"
 	echo $(ZSH)
 	echo "$(ZDOTDIR)/ohmyzsh"
@@ -68,7 +68,7 @@ stow_ohmyzsh_custom_theme:
 	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh --verbose=1 --no-folding --adopt --restow ohmyzsh
 	@echo "Done"
 
-ohmyzsh_plugins:
+ohmyzsh-plugins:
 	@echo "Installing zsh-autosuggestions and zsh-syntax-highlighting plugins"
 	@git clone https://github.com/zsh-users/zsh-autosuggestions $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-autosuggestions
 	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-syntax-highlighting
@@ -115,9 +115,9 @@ asdf-ruby:
 	@asdf install ruby
 	@echo "Done"
 
-aws_credentials: aws_credentials_arqshoah aws_credentials_legado
+aws-credentials: aws-credentials-arqshoah aws-credentials-legado
 
-aws_credentials_arqshoah:
+aws-credentials-arqshoah:
 	@echo "Configuring AWS credentials for Arqshoah"
 	@[[ -n $$aws_access_key_id ]] || read -rp "Enter AWS Access Key ID for Arqshoah: " aws_access_key_id; \
 	/opt/homebrew/bin/aws configure set aws_access_key_id $$aws_access_key_id --profile arqshoah;
@@ -126,7 +126,7 @@ aws_credentials_arqshoah:
 	/opt/homebrew/bin/aws configure set aws_secret_access_key $$aws_secret_access_key --profile arqshoah
 	@echo "Done"
 
-aws_credentials_legado:
+aws-credentials-legado:
 	@echo "Configuring AWS credentials for Legado"
 	@[[ -n $$aws_access_key_id ]] || read -rp "Enter AWS Access Key ID for Legado: " aws_access_key_id; \
 	/opt/homebrew/bin/aws configure set aws_access_key_id $$aws_access_key_id --profile legado;
@@ -135,7 +135,7 @@ aws_credentials_legado:
 	/opt/homebrew/bin/aws configure set aws_secret_access_key $$aws_secret_access_key --profile legado;
 	@echo "Done"
 
-gpg_keys:
+gpg-keys:
 	@echo "Setup GPG keys"
 	@mkdir -p $(GNUPGHOME)
 	@chown -R $$(whoami) $(GNUPGHOME)
