@@ -56,13 +56,13 @@ stow:
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	@echo "Move theme to custom folder"
 	@echo "Done"
 
 stow_ohmyzsh_custom_theme:
 	@echo "Installing Oh My Zsh custom theme"
 	echo $(ZSH)
 	echo "$(ZDOTDIR)/ohmyzsh"
+	ls -al $(HOME)
 	ls -al $(XDG_CONFIG_HOME)
 	ls -al $(XDG_CONFIG_HOME)/zsh
 	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh --verbose=1 --no-folding --adopt --restow ohmyzsh
