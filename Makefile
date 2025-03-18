@@ -1,6 +1,6 @@
 SHELL:=/bin/zsh
 
-all: sudo xdg_specs brew stow ohmyzsh ohmyzsh_plugins  duti asdf aws_credentials gpg_keys
+all: sudo xdg_specs brew stow ohmyzsh stow_ohmyzsh_custom_theme ohmyzsh_plugins duti asdf aws_credentials gpg_keys
 
 sudo:
 ifndef CI
@@ -50,14 +50,18 @@ endif
 
 stow:
 	@echo "Installing dotfiles"
-	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt dot-files
+	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
 	@echo "Done"
 
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	@echo "Move theme to custom folder"
-	@mv $(XDG_CONFIG_HOME)/zsh/robbyrussell-custom.zsh-theme $(ZSH)/custom/themes
+	@echo "Done"
+
+stow_ohmyzsh_custom_theme:
+	@echo "Installing Oh My Zsh custom theme"
+	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh --verbose=1 --no-folding --adopt --restow ohmyzsh
 	@echo "Done"
 
 ohmyzsh_plugins:
