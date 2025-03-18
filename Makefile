@@ -1,6 +1,6 @@
 SHELL:=/bin/zsh
 
-all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom-theme ohmyzsh-plugins duti asdf aws-credentials gpg-keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti asdf aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -53,19 +53,19 @@ stow:
 	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
 	@echo "Done"
 
-.PHONY: ohmyzsh
+ohmyzsh:
 	@echo "Installing Oh My Zsh"
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 	@echo "Done"
 
-stow-ohmyzsh-custom-theme:
+stow-ohmyzsh-custom:
 	@echo "Installing Oh My Zsh custom theme"
 	echo $(ZSH)
 	echo "$(ZDOTDIR)/ohmyzsh"
 	ls -al $(HOME)
 	ls -al $(XDG_CONFIG_HOME)
 	ls -al $(XDG_CONFIG_HOME)/zsh
-	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh --verbose=1 --no-folding --adopt --restow ohmyzsh
+	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom --verbose=1 --no-folding --adopt --restow ohmyzsh-custom
 	@echo "Done"
 
 ohmyzsh-plugins:
