@@ -56,6 +56,8 @@ stow:
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	@echo "Move theme to custom folder"
+	@mv $(XDG_CONFIG_HOME)/zsh/robbyrussell-custom.zsh-theme $(ZSH)/custom/themes
 	@echo "Done"
 
 ohmyzsh_plugins:
