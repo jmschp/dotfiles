@@ -54,9 +54,9 @@ stow:
 	@echo "Done"
 
 ohmyzsh:
-	@echo "Installing Oh My Zsh"
-	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	@echo "Done"
+	echo "Installing Oh My Zsh"
+	sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	echo "Done"
 
 stow-ohmyzsh-custom-theme:
 	@echo "Installing Oh My Zsh custom theme"
