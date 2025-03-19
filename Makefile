@@ -16,8 +16,9 @@ xdg_specs:
 	@mkdir -p "$(HOME)/.local/state"
 	@mkdir -p "$(HOME)/.local/runtime"
 	@chmod 0700 "$(HOME)/.local/runtime"
-	@mkdir -p "$(XDG_STATE_HOME)/zsh"
 	@mkdir -p "$(XDG_CACHE_HOME)/zsh"
+	@mkdir -p "$(XDG_CONFIG_HOME)/zsh"
+	@mkdir -p "$(XDG_STATE_HOME)/zsh"
 	@echo "Done"
 
 brew: brew-install brew-formulae brew-casks
