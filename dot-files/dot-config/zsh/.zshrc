@@ -75,6 +75,7 @@ plugins=(
   asdf
   aws
   bundler
+  docker
   gcloud
   git
   gh

@@ -1,6 +1,6 @@
 SHELL:=/bin/zsh
 
-all: sudo xdg_specs brew ohmyzsh ohmyzsh_plugins stow duti asdf aws_credentials gpg_keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti rust asdf aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -16,8 +16,10 @@ xdg_specs:
 	@mkdir -p "$(HOME)/.local/state"
 	@mkdir -p "$(HOME)/.local/runtime"
 	@chmod 0700 "$(HOME)/.local/runtime"
-	@mkdir -p "$(XDG_STATE_HOME)/zsh"
 	@mkdir -p "$(XDG_CACHE_HOME)/zsh"
+	@mkdir -p "$(XDG_CONFIG_HOME)/zsh"
+	@mkdir -p "$(XDG_STATE_HOME)/zsh"
+	@cp -f dot-files/dot-zshenv "$(HOME)/.zshenv"
 	@echo "Done"
 
 brew: brew-install brew-formulae brew-casks
@@ -38,44 +40,50 @@ endif
 
 brew-formulae:
 	@echo "Installing Brew formulae"
-	@/opt/homebrew/bin/brew bundle --no-lock --file=homebrew/Brewfile
+	@/opt/homebrew/bin/brew bundle --file=homebrew/Brewfile
 	@echo "Done"
 
 brew-casks:
 ifndef CI
 	@echo "Installing Brew casks"
-	@/opt/homebrew/bin/brew bundle --no-lock --file=homebrew/Caskfile
+	@/opt/homebrew/bin/brew bundle --file=homebrew/Caskfile
 	@echo "Done"
 endif
 
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
-	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	@echo "Done"
-
-ohmyzsh_plugins:
-	@echo "Installing zsh-autosuggestions and zsh-syntax-highlighting plugins"
-	@git clone https://github.com/zsh-users/zsh-autosuggestions $${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 	@echo "Done"
 
 stow:
 	@echo "Installing dotfiles"
-	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt dot-files
+	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
+	@echo "Done"
+
+stow-ohmyzsh-custom:
+	@echo "Installing Oh My Zsh custom theme"
+	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom --verbose=1 --no-folding --adopt --restow ohmyzsh-custom
+	@echo "Done"
+
+ohmyzsh-plugins:
+	@echo "Installing zsh-autosuggestions and zsh-syntax-highlighting plugins"
+	@git clone https://github.com/zsh-users/zsh-autosuggestions $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-autosuggestions
+	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-syntax-highlighting
 	@echo "Done"
 
 duti:
+	ls -al $(HOME)
+	ls -al $(XDG_CONFIG_HOME)
+	ls -al $(XDG_CONFIG_HOME)/zsh
 	@echo "Setting default applications"
 	@/opt/homebrew/bin/duti -v .duti
 	@echo "Done"
 
 rust:
-ifndef CI
 	@echo "Installing Rust"
 	@/opt/homebrew/bin/brew link --force rustup
 	@/opt/homebrew/bin/rustup default stable
 	@echo "Done"
-endif
 
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
@@ -105,9 +113,9 @@ asdf-ruby:
 	@asdf install ruby
 	@echo "Done"
 
-aws_credentials: aws_credentials_arqshoah aws_credentials_legado
+aws-credentials: aws-credentials-arqshoah aws-credentials-legado
 
-aws_credentials_arqshoah:
+aws-credentials-arqshoah:
 	@echo "Configuring AWS credentials for Arqshoah"
 	@[[ -n $$aws_access_key_id ]] || read -rp "Enter AWS Access Key ID for Arqshoah: " aws_access_key_id; \
 	/opt/homebrew/bin/aws configure set aws_access_key_id $$aws_access_key_id --profile arqshoah;
@@ -116,7 +124,7 @@ aws_credentials_arqshoah:
 	/opt/homebrew/bin/aws configure set aws_secret_access_key $$aws_secret_access_key --profile arqshoah
 	@echo "Done"
 
-aws_credentials_legado:
+aws-credentials-legado:
 	@echo "Configuring AWS credentials for Legado"
 	@[[ -n $$aws_access_key_id ]] || read -rp "Enter AWS Access Key ID for Legado: " aws_access_key_id; \
 	/opt/homebrew/bin/aws configure set aws_access_key_id $$aws_access_key_id --profile legado;
@@ -125,7 +133,7 @@ aws_credentials_legado:
 	/opt/homebrew/bin/aws configure set aws_secret_access_key $$aws_secret_access_key --profile legado;
 	@echo "Done"
 
-gpg_keys:
+gpg-keys:
 	@echo "Setup GPG keys"
 	@mkdir -p $(GNUPGHOME)
 	@chown -R $$(whoami) $(GNUPGHOME)
@@ -149,16 +157,16 @@ test-all: test-stow test-asdf-tools test-aws-credentials test-gpg
 
 test-stow:
 	@echo "Testing dotfiles"
-	@test -L "$(XDG_CONFIG_HOME)/asdf/asdfrc"
-	@test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
-	@test -L "$(XDG_CONFIG_HOME)/aws/config"
-	@test -L "$(XDG_CONFIG_HOME)/git/config"
-	@test -L "$(XDG_CONFIG_HOME)/git/ignore"
-	@test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
-	@test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"
-	@test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
-	@test -L "$(HOME)/.zshenv"
-	@test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
+	test -L "$(XDG_CONFIG_HOME)/asdf/asdfrc"
+	test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
+	test -L "$(XDG_CONFIG_HOME)/aws/config"
+	test -L "$(XDG_CONFIG_HOME)/git/config"
+	test -L "$(XDG_CONFIG_HOME)/git/ignore"
+	test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
+	test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"
+	test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
+	test -L "$(HOME)/.zshenv"
+	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
 	@echo "Done"
 
 test-asdf-tools:
