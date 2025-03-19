@@ -52,7 +52,7 @@ endif
 
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
-	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 	@echo "Done"
 
 stow:
