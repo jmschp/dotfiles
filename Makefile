@@ -19,6 +19,7 @@ xdg_specs:
 	@mkdir -p "$(XDG_CACHE_HOME)/zsh"
 	@mkdir -p "$(XDG_CONFIG_HOME)/zsh"
 	@mkdir -p "$(XDG_STATE_HOME)/zsh"
+	@cp --force dot-files/dot-zshenv "$(HOME)/.zshenv"
 	@echo "Done"
 
 brew: brew-install brew-formulae brew-casks
@@ -49,14 +50,14 @@ ifndef CI
 	@echo "Done"
 endif
 
-stow:
-	@echo "Installing dotfiles"
-	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
-	@echo "Done"
-
 ohmyzsh:
 	@echo "Installing Oh My Zsh"
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	@echo "Done"
+
+stow:
+	@echo "Installing dotfiles"
+	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
 	@echo "Done"
 
 stow-ohmyzsh-custom:
