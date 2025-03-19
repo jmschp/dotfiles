@@ -19,7 +19,7 @@ xdg_specs:
 	@mkdir -p "$(XDG_CACHE_HOME)/zsh"
 	@mkdir -p "$(XDG_CONFIG_HOME)/zsh"
 	@mkdir -p "$(XDG_STATE_HOME)/zsh"
-	@cp --force dot-files/dot-zshenv "$(HOME)/.zshenv"
+	@cp -f dot-files/dot-zshenv "$(HOME)/.zshenv"
 	@echo "Done"
 
 brew: brew-install brew-formulae brew-casks
