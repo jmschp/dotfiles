@@ -71,6 +71,9 @@ ohmyzsh-plugins:
 	@echo "Done"
 
 duti:
+	ls -al $(HOME)
+	ls -al $(XDG_CONFIG_HOME)
+	ls -al $(XDG_CONFIG_HOME)/zsh
 	@echo "Setting default applications"
 	@/opt/homebrew/bin/duti -v .duti
 	@echo "Done"
