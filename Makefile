@@ -96,8 +96,8 @@ asdf-plugins:
 	@echo "Done"
 
 asdf-nodejs:
-	@echo "Installing nodejs $$(asdf cmd nodejs resolve lts --latest-available)"
-	@asdf set --home nodejs $$(asdf cmd nodejs resolve lts --latest-available)
+	@echo "Installing nodejs $$(asdf cmd nodejs resolve lts)"
+	@asdf set --home nodejs $$(asdf cmd nodejs resolve lts)
 	@asdf install nodejs
 	@echo "Done"
 
