@@ -3,6 +3,7 @@
 
 ###### Alias
 alias aliasg='alias | grep'
+alias cur="cursor"
 alias gsweep='git branch --merged $(git_main_branch) | grep -v "$(git_main_branch)$" | xargs git branch -d && git remote prune origin'
 alias myip="curl https://ipinfo.io/json" # or /ip for plain-text ip
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
