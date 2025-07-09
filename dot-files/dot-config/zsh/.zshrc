@@ -71,7 +71,7 @@ ZSH_THEME="robbyrussell-custom"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  brew
+    brew
   asdf
   aws
   bundler
@@ -90,8 +90,6 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
-
-# Settings here need to be sourced before Oh My Zsh
 
 source $ZSH/oh-my-zsh.sh
 
