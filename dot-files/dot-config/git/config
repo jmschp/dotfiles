@@ -15,6 +15,7 @@
 	# trustctime = false
 	# untrackedCache = true
 	ignorecase = false
+	editor = cursor --wait
 
 [init]
 	defaultBranch = main
@@ -23,16 +24,16 @@
 	helper = osxkeychain
 
 [diff]
-  tool = vscode
+  tool = cursor
 
-[difftool "vscode"]
-  cmd = code --wait --diff $LOCAL $REMOTE
+[difftool "cursor"]
+  cmd = cursor --wait --diff $LOCAL $REMOTE
 
 [merge]
-  tool = vscode
+  tool = cursor
 
-[mergetool "vscode"]
-  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+[mergetool "cursor"]
+  cmd = cursor --wait --merge $REMOTE $LOCAL $BASE $MERGED
 
 [commit]
 	gpgsign = true

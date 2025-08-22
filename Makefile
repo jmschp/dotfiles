@@ -102,8 +102,8 @@ asdf-nodejs:
 	@echo "Done"
 
 asdf-python:
-	@echo "Installing python $$(asdf latest python 2) and $$(asdf latest python 3)"
-	@asdf set --home python $$(asdf latest python 2) $$(asdf latest python 3)
+	@echo "Installing python $$(asdf latest python 3)"
+	@asdf set --home python $$(asdf latest python 3)
 	@asdf install python
 	@echo "Done"
 
