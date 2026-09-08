@@ -89,9 +89,17 @@ Makefile              the installer
 
 ## Secrets
 
-Some tracked files contain values that should not end up in git history, such as the ngrok auth token and AWS account ids. Those lines end with a `#gitignoreSecret` marker, and a git clean filter (defined in `dot-files/dot-config/git/config`, enabled for the whole repo by `.gitattributes`) replaces the value with `[REDACTED]` on commit. The working tree keeps the real value.
+Some tracked files contain values that should not end up in git history, such as the ngrok auth token and AWS account ids. Each of those values has a `# gitignoreSecret` comment on the line above it, and a git clean filter (defined in `dot-files/dot-config/git/config`, enabled for the whole repo by `.gitattributes`) replaces the value on the following line with `[REDACTED]` on commit. The working tree keeps the real value.
 
-To protect a new value, put `#gitignoreSecret` at the end of its line. The filter is only active once the git config has been stowed, so do not commit those files from a fresh checkout before running `make stow`.
+```ini
+[profile example]
+# gitignoreSecret
+sso_account_id = [REDACTED]
+```
+
+The marker is a full comment line rather than a trailing comment because INI files, like the AWS config, do not support inline comments. To protect a new value, add the marker line directly above it. The filter is only active once the git config has been stowed, so do not commit those files from a fresh checkout before running `make stow`.
+
+After a fresh install, fill in the `[REDACTED]` values in `~/.config/aws/config` and `~/.config/ngrok/ngrok.yml` by hand.
 
 ## Testing
 
