@@ -1,7 +1,7 @@
 # Brewfile list packages brew
 
 tap 'mongodb/brew'
-trust mongodb/brew
+trust 'mongodb/brew'
 
 brew 'asdf'
 brew 'aws-elasticbeanstalk'
