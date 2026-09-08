@@ -1,5 +1,15 @@
 SHELL:=/bin/zsh
 
+# Log helpers: a blank line and a bold "==>" header so each step stands out
+# in the install log (same style Homebrew uses). Colours render in GitHub Actions too.
+define log
+@printf "\n\033[1;34m==> \033[1;37m%s\033[0m\n" "$(1)"
+endef
+
+define done
+@printf "\033[1;32m==> Done\033[0m\n"
+endef
+
 all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti rust asdf aws-credentials gpg-keys
 
 sudo:
@@ -9,7 +19,7 @@ ifndef CI
 endif
 
 xdg_specs:
-	@echo "Creating XDG Base Directory Specification"
+	$(call log,Creating XDG Base Directory Specification)
 	@mkdir -p "$(HOME)/.cache"
 	@mkdir -p "$(HOME)/.config"
 	@mkdir -p "$(HOME)/.local/share"
@@ -20,121 +30,118 @@ xdg_specs:
 	@mkdir -p "$(XDG_CONFIG_HOME)/zsh"
 	@mkdir -p "$(XDG_STATE_HOME)/zsh"
 	@cp -f dot-files/dot-zshenv "$(HOME)/.zshenv"
-	@echo "Done"
+	$(call done)
 
 brew: brew-install brew-formulae brew-casks
 
 brew-install:
 # Skip if running in CI because Homebrew is already installed in macos-latest image
 ifndef CI
-	@echo "Installing Homebrew"
+	$(call log,Installing Homebrew)
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	@echo "Done"
+	$(call done)
 endif
 ifdef CI
-	@echo "Updating Brew formulae"
+	$(call log,Updating Brew formulae)
 	@/opt/homebrew/bin/brew update
 	@/opt/homebrew/bin/brew upgrade
-	@echo "Done"
+	$(call done)
 endif
 
 brew-formulae:
-	@echo "Installing Brew formulae"
+	$(call log,Installing Brew formulae)
 	@/opt/homebrew/bin/brew bundle --file=homebrew/Brewfile
-	@echo "Done"
+	$(call done)
 
 brew-casks:
 ifndef CI
-	@echo "Installing Brew casks"
+	$(call log,Installing Brew casks)
 	@/opt/homebrew/bin/brew bundle --file=homebrew/Caskfile
-	@echo "Done"
+	$(call done)
 endif
 
 ohmyzsh:
-	@echo "Installing Oh My Zsh"
+	$(call log,Installing Oh My Zsh)
 	@sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
-	@echo "Done"
+	$(call done)
 
 stow:
-	@echo "Installing dotfiles"
+	$(call log,Installing dotfiles)
 	@/opt/homebrew/bin/stow --target=$(HOME) --dotfiles --verbose=1 --no-folding --adopt --restow dot-files
-	@echo "Done"
+	$(call done)
 
 stow-ohmyzsh-custom:
-	@echo "Installing Oh My Zsh custom theme"
+	$(call log,Installing Oh My Zsh custom theme)
 	@/opt/homebrew/bin/stow --target=$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom --verbose=1 --no-folding --adopt --restow ohmyzsh-custom
-	@echo "Done"
+	$(call done)
 
 ohmyzsh-plugins:
-	@echo "Installing zsh-autosuggestions and zsh-syntax-highlighting plugins"
+	$(call log,Installing zsh-autosuggestions and zsh-syntax-highlighting plugins)
 	@git clone https://github.com/zsh-users/zsh-autosuggestions $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-autosuggestions
 	@git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $(ZDOTDIR)/ohmyzsh/custom/plugins/zsh-syntax-highlighting
-	@echo "Done"
+	$(call done)
 
 duti:
-	ls -al $(HOME)
-	ls -al $(XDG_CONFIG_HOME)
-	ls -al $(XDG_CONFIG_HOME)/zsh
-	@echo "Setting default applications"
+	$(call log,Setting default applications)
 	@/opt/homebrew/bin/duti -v .duti
-	@echo "Done"
+	$(call done)
 
 rust:
-	@echo "Installing Rust"
+	$(call log,Installing Rust)
 	@/opt/homebrew/bin/brew link --force rustup
 	@/opt/homebrew/bin/rustup default stable
-	@echo "Done"
+	$(call done)
 
 asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
 
 asdf-plugins:
-	@echo "Adding asdf-alias plugin"
+	$(call log,Adding asdf-alias plugin)
 	@asdf plugin add alias
 	@asdf plugin add nodejs
 	@asdf plugin add python
 	@asdf plugin add ruby
-	@echo "Done"
+	$(call done)
 
 asdf-nodejs:
-	@echo "Installing nodejs $$(asdf cmd nodejs resolve lts)"
+	$(call log,Installing nodejs $$(asdf cmd nodejs resolve lts))
 	@asdf set --home nodejs $$(asdf cmd nodejs resolve lts)
 	@asdf install nodejs
-	@echo "Done"
+	$(call done)
 
 asdf-python:
-	@echo "Installing python $$(asdf latest python 3)"
+	$(call log,Installing python $$(asdf latest python 3))
 	@asdf set --home python $$(asdf latest python 3)
 	@asdf install python
-	@echo "Done"
+	$(call done)
 
 asdf-ruby:
-	@echo "Installing ruby $$(asdf latest ruby 3)"
+	$(call log,Installing ruby $$(asdf latest ruby 3))
 	@asdf set --home ruby $$(asdf latest ruby 3)
 	@asdf install ruby
-	@echo "Done"
+	$(call done)
 
 aws-credentials: aws-credentials-arqshoah aws-credentials-legado
 
 aws-credentials-arqshoah:
-	@echo "Configuring AWS credentials for Arqshoah"
+	$(call log,Configuring AWS credentials for Arqshoah)
 	@[[ -n $$aws_access_key_id ]] || read -rp "Enter AWS Access Key ID for Arqshoah: " aws_access_key_id; \
 	/opt/homebrew/bin/aws configure set aws_access_key_id $$aws_access_key_id --profile arqshoah;
 
 	@[[ -n $$aws_secret_access_key ]] || read -rp "Enter AWS Secret Access Key for Arqshoah: " aws_secret_access_key; \
 	/opt/homebrew/bin/aws configure set aws_secret_access_key $$aws_secret_access_key --profile arqshoah
-	@echo "Done"
+	$(call done)
 
 aws-credentials-legado:
-	@echo "Configuring AWS credentials for Legado"
+	$(call log,Configuring AWS credentials for Legado)
 	@[[ -n $$aws_access_key_id ]] || read -rp "Enter AWS Access Key ID for Legado: " aws_access_key_id; \
 	/opt/homebrew/bin/aws configure set aws_access_key_id $$aws_access_key_id --profile legado;
 
 	@[[ -n $$aws_secret_access_key ]] || read -rp "Enter AWS Secret Access Key for Legado: " aws_secret_access_key; \
 	/opt/homebrew/bin/aws configure set aws_secret_access_key $$aws_secret_access_key --profile legado;
-	@echo "Done"
+	$(call done)
 
 gpg-keys:
-	@echo "Setup GPG keys"
+	$(call log,Setup GPG keys)
 	@mkdir -p $(GNUPGHOME)
 	@chown -R $$(whoami) $(GNUPGHOME)
 	@find $(GNUPGHOME) -type f -exec chmod 600 {} \;
@@ -143,20 +150,20 @@ ifndef CI
 	@read -rp "Enter path to GPG key backup: " path_to_gpg_key; \
 	/opt/homebrew/bin/gpg --import-options restore --import $$path_to_gpg_key
 endif
-	@echo "Done"
+	$(call done)
 
 .PHONY: macos
 macos:
-	@echo "Configuring macOS"
+	$(call log,Configuring macOS)
 	@./macos.sh
-	@echo "Done"
+	$(call done)
 
 # Tests
 
 test-all: test-stow test-asdf-tools test-aws-credentials test-gpg
 
 test-stow:
-	@echo "Testing dotfiles"
+	$(call log,Testing dotfiles)
 	test -L "$(XDG_CONFIG_HOME)/asdf/asdfrc"
 	test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
 	test -L "$(XDG_CONFIG_HOME)/aws/config"
@@ -167,21 +174,19 @@ test-stow:
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
 	test -L "$(HOME)/.zshenv"
 	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
-	@echo "Done"
+	$(call done)
 
 test-asdf-tools:
-	@echo "Testing asdf tool versions"
-	@[[ -f "$(HOME)/.tool-versions" && -n "$(HOME)/.tool-versions" ]]
-	@echo "Done"
+	$(call log,Testing asdf tool versions)
+	@[[ -s "$(HOME)/.tool-versions" ]]
+	$(call done)
 
 test-aws-credentials:
-	@echo "Testing AWS credentials"
-	@echo $(XDG_DATA_HOME)
-	@cat "$(XDG_DATA_HOME)/aws/credentials"
-	@[[ -f "$(XDG_DATA_HOME)/aws/credentials" && -n "$(XDG_DATA_HOME)/aws/credentials" ]]
-	@echo "Done"
+	$(call log,Testing AWS credentials)
+	@[[ -s "$(XDG_DATA_HOME)/aws/credentials" ]]
+	$(call done)
 
 test-gpg:
-	@echo "Testing GPG keys"
+	$(call log,Testing GPG keys)
 	@[[ -d "$(XDG_DATA_HOME)/gnupg" && -O "$(XDG_DATA_HOME)/gnupg" && -r "$(XDG_DATA_HOME)/gnupg" && -w "$(XDG_DATA_HOME)/gnupg" && -x "$(XDG_DATA_HOME)/gnupg" ]]
-	@echo "Done"
+	$(call done)

@@ -1,6 +1,7 @@
 version: "3"
 agent:
-  authtoken: [REDACTED] #gitignoreSecret
+  # gitignoreSecret
+  authtoken: [REDACTED]
 endpoints:
   - name: localhost80
     url: https://horse-workable-bluebird.ngrok-free.app

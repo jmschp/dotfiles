@@ -8,3 +8,4 @@ rubocop-performance
 rubocop-rails
 rubocop-rake
 rubocop-rspec
+webrick
