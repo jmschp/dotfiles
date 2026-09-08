@@ -82,9 +82,6 @@ ohmyzsh-plugins:
 	$(call done)
 
 duti:
-	ls -al $(HOME)
-	ls -al $(XDG_CONFIG_HOME)
-	ls -al $(XDG_CONFIG_HOME)/zsh
 	$(call log,Setting default applications)
 	@/opt/homebrew/bin/duti -v .duti
 	$(call done)
@@ -181,14 +178,12 @@ test-stow:
 
 test-asdf-tools:
 	$(call log,Testing asdf tool versions)
-	@[[ -f "$(HOME)/.tool-versions" && -n "$(HOME)/.tool-versions" ]]
+	@[[ -s "$(HOME)/.tool-versions" ]]
 	$(call done)
 
 test-aws-credentials:
 	$(call log,Testing AWS credentials)
-	@echo $(XDG_DATA_HOME)
-	@cat "$(XDG_DATA_HOME)/aws/credentials"
-	@[[ -f "$(XDG_DATA_HOME)/aws/credentials" && -n "$(XDG_DATA_HOME)/aws/credentials" ]]
+	@[[ -s "$(XDG_DATA_HOME)/aws/credentials" ]]
 	$(call done)
 
 test-gpg:
