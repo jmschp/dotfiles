@@ -34,9 +34,11 @@ CI (`.github/workflows/github-actions.yml`) runs `make` then `make test-all` on 
 
 ## Secret redaction filter (important)
 
-`.gitattributes` applies a `gitignoreSecret` clean filter to every file. The filter is defined in `dot-files/dot-config/git/config` and replaces the value of any line ending in `#gitignoreSecret` with `[REDACTED]` at commit time, while the working tree keeps the real value. This is how `ngrok.yml` (auth token) and `aws/config` (account ids) are tracked.
+`.gitattributes` applies a `gitignoreSecret` clean filter to every file. The filter is defined in `dot-files/dot-config/git/config`. When a line consists only of the comment `# gitignoreSecret`, the filter replaces the value on the **next** line (everything after the first `=` or `:`) with `[REDACTED]` at commit time, while the working tree keeps the real value. This is how `ngrok.yml` (auth token) and `aws/config` (account ids) are tracked.
 
-- Never remove a trailing `#gitignoreSecret` marker or copy a marked value elsewhere; add the marker to any new line that holds a token or account id.
+- The marker is a full comment line above the value, never a trailing comment. INI files such as the AWS config do not support inline comments, so a trailing marker becomes part of the value and breaks the tool.
+- Never remove a `# gitignoreSecret` line or copy the value below it elsewhere. To protect a new value, add the marker line directly above it. Do not put secrets in ordinary comments either; only the line after a marker is redacted.
+- Only genuinely sensitive values are marked. Regions and SSO session names are not, so the config works on a fresh machine without editing.
 - The filter only exists once the stowed git config is active. On a fresh checkout before `make stow`, committing would write real values into history. `git status` may also show these files as modified until the filter is configured; that is expected, not a real change.
 - `git show HEAD:<file>` is the way to confirm what is actually committed.
 

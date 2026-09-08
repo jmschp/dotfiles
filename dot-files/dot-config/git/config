@@ -48,6 +48,6 @@
 	smudge = git-lfs smudge -- %f
 
 [filter "gitignoreSecret"]
-	clean = "sed 's/^\\(.*\\)\\([:=]\\)\\s*\\(.*\\) #gitignoreSecret$/\\1\\2 [REDACTED] #gitignoreSecret/'"
+	clean = "sed -E '/^[[:space:]]*#[[:space:]]*gitignoreSecret[[:space:]]*$/{n;s/^([^=:]*[=:])[[:space:]]*.*$/\\1 [REDACTED]/;}'"
 	smudge = cat
 	required = true
