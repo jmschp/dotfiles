@@ -1,0 +1,21 @@
+#!/bin/zsh
+# post-checkout hook, registered for every repo in ../config. When `git worktree add`
+# creates a worktree, copy the untracked files matching the main checkout's
+# .worktreeinclude (gitignore syntax, same file Claude Code reads) into it, e.g.:
+#   /.env
+#   /.claude/settings.local.json
+# Existing files are never overwritten. Always exits 0 so it cannot fail a checkout.
+
+# Git passes the null ref as the previous HEAD only for a new worktree or a clone.
+[[ $1 =~ '^0+$' ]] || exit 0
+
+main=$(git rev-parse --path-format=absolute --git-common-dir) || exit 0
+main=${main:h:A}
+# Skip clones (the checkout is the main one) and repos without a .worktreeinclude.
+[[ $main != ${PWD:A} && -f $main/.worktreeinclude ]] || exit 0
+
+for f in ${(f)"$(git -C $main ls-files --others --ignored --exclude-from=.worktreeinclude)"}; do
+  [[ -e $f ]] && continue
+  mkdir -p ${f:h} && cp -p $main/$f $f && print -u2 "worktree-copy: copied $f"
+done
+exit 0

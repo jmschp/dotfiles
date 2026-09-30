@@ -168,6 +168,7 @@ test-stow:
 	test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
 	test -L "$(XDG_CONFIG_HOME)/aws/config"
 	test -L "$(XDG_CONFIG_HOME)/git/config"
+	test -L "$(XDG_CONFIG_HOME)/git/hooks/worktree-copy"
 	test -L "$(XDG_CONFIG_HOME)/git/ignore"
 	test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"

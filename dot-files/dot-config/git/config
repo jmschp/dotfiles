@@ -41,6 +41,13 @@
 [gpg]
 	program = /opt/homebrew/bin/gpg
 
+# Global post-checkout hook: copies the files matching a repo's .worktreeinclude into new worktrees.
+# Runs alongside the repo's own .git/hooks/post-checkout. Disable per repo with
+# `git config hook.worktree-copy.enabled false`.
+[hook "worktree-copy"]
+	event = post-checkout
+	command = ~/.config/git/hooks/worktree-copy
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	process = git-lfs filter-process
