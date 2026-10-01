@@ -80,6 +80,7 @@ dot-files/            Stow package; `dot-` prefix becomes `.` in $HOME
     zsh/              .zshrc (Oh My Zsh, plugins, theme) and .zlogin (aliases, PATH)
     git/              config and global ignore
     asdf/ aws/ irb/ ngrok/ npm/
+  dot-claude/         becomes ~/.claude (user-level CLAUDE.md for Claude Code)
 ohmyzsh-custom/       Stow package targeted at $ZDOTDIR/ohmyzsh/custom (theme)
 homebrew/             Brewfile (formulae) and Caskfile (GUI apps)
 .duti                 file extension -> default app mappings
