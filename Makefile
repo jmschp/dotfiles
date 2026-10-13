@@ -175,6 +175,7 @@ test-stow:
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
 	test -L "$(HOME)/.zshenv"
 	test -L "$(HOME)/.claude/CLAUDE.md"
+	test -L "$(HOME)/.claude/settings.json"
 	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
 	$(call done)
 
