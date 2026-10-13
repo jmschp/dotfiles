@@ -1,6 +1,6 @@
 # Brewfile list packages brew
 
-tap 'mongodb/brew'
+tap 'mongodb/brew', trusted: true
 
 brew 'asdf'
 brew 'aws-elasticbeanstalk'
@@ -18,7 +18,7 @@ brew 'libyaml'
 brew 'llvm'
 brew 'make'
 brew 'memcached'
-brew 'mongodb-community'
+brew 'mongodb-database-tools'
 # brew 'ngrok'
 brew 'openssl'
 brew 'readline'
