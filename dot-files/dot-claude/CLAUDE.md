@@ -41,5 +41,5 @@
 
 ## Environment
 
-- I run Claude Code inside Herdr panes (`HERDR_ENV=1`). Never suggest launching `herdr` from a pane, and don't give tmux advice.
+- I run Claude Code in iTerm2 with its Claude Code integration (Session Status, Claude Code Workgroup). I launch `claude` from the repo or worktree I'm working in. Don't give tmux advice.
 - Worktrees: I often create the worktree for an issue myself. Check `git worktree list` before proposing a new one. Never symlink `node_modules` between worktrees; run a real install.
