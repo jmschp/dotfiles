@@ -3,7 +3,6 @@
     "allow": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "claude-opus-5-5",
   "hooks": {
     "Notification": [
       {
@@ -115,5 +114,7 @@
   },
   "autoMemoryEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "theme": "auto"
+  "theme": "auto",
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
 }
