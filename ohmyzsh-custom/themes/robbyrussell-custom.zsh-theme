@@ -1,5 +1,36 @@
-PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
-PROMPT+='$(git_prompt_info)$(git_prompt_status)$(git_remote_status) '
+# Longest a directory or branch name may be before its middle is replaced by "…".
+PROMPT_NAME_MAX=24
+
+# Keep the start and the end of a name, drop the middle.
+function prompt_truncate_middle() {
+  local name="$1"
+  (( ${#name} <= PROMPT_NAME_MAX )) && { echo -n "$name"; return }
+  local tail=$(( (PROMPT_NAME_MAX - 1) / 2 ))
+  local head=$(( PROMPT_NAME_MAX - 1 - tail ))
+  echo -n "${name[1,head]}…${name[-tail,-1]}"
+}
+
+# %c with a middle-truncated name ("%" escaped for prompt expansion).
+function prompt_dir() {
+  local dir="$(prompt_truncate_middle "${(%):-%c}")"
+  echo -n "${dir//\%/%%}"
+}
+
+# Takes the output of git_prompt_info and middle-truncates the branch in it.
+# Oh My Zsh renders PREFIX + branch + dirty/clean + SUFFIX; the branch is the
+# text after the prefix up to the first space (DIRTY and CLEAN below start
+# with a space). The literal "$(git_prompt_info)" must stay in PROMPT: Oh My
+# Zsh looks for it there to decide whether to start its async git job.
+function prompt_git_info() {
+  local info="$1"
+  [[ -n "$info" ]] || return 0
+  local body="${info#"$ZSH_THEME_GIT_PROMPT_PREFIX"}"
+  local branch="${body%% *}"
+  echo -n "${ZSH_THEME_GIT_PROMPT_PREFIX}$(prompt_truncate_middle "$branch")${body#"$branch"}"
+}
+
+PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}\$(prompt_dir)%{$reset_color%}"
+PROMPT+='$(prompt_git_info "$(git_prompt_info)")$(git_prompt_status)$(git_remote_status) '
 
 # [[ ! -z ${git_info} ]] && echo "%{$fg_bold[magenta]%})%{$reset_color%}" || echo ""
 
