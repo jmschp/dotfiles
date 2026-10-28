@@ -3,7 +3,7 @@
 ## Git and GitHub
 
 - Open every PR as a draft (`gh pr create --draft`). I mark it ready for review myself; never run `gh pr ready` unless asked.
-- After acting on a review comment, reply in that comment's thread (`gh api repos/<o>/<r>/pulls/<n>/comments/<id>/replies`), naming the commit and what changed (or why not). A top-level PR comment is not a substitute.
+- Every human review comment gets a reply, naming the commit and what changed (or why not). Inline comments: reply in the thread (`gh api repos/<o>/<r>/pulls/<n>/comments/<id>/replies`); a top-level PR comment is not a substitute. A review's summary body, including a "nothing to fix" review, can't take a threaded reply: answer it with a PR comment that quotes it. After each review round, check `pulls/<n>/comments`, `pulls/<n>/reviews` and `issues/<n>/comments` for every PR in the stack. Bot reviews with nothing to act on need no reply.
 - One issue per plan and per PR, kept small. If two issues are coupled, order them as stacked PRs instead of merging them into one.
 - Stage explicit paths. Never `git add -A` or `git add .`.
 - IMPORTANT: commit or push only after a real green result. Gate on the result itself (e.g. `0 failures`, exit status via `PIPESTATUS`), never on a grep that also matches a failing summary. Keep edit scripts that can abort midway in a separate command from the commit.
@@ -15,6 +15,7 @@
 - Prefer minimal, uniform interfaces: no new class or service for a few lines with a single caller, no redundant fields that duplicate information already returned elsewhere, one helper per case rather than special-case variants.
 - Wrap third-party SDKs (error reporting, analytics, feature flags, payments) behind one app-owned module in the app's own vocabulary. It is the only importer of the vendor package (enforce with a lint rule), takes plain arguments (no vendor types), and specs mock it.
 - Error responses carry a human-readable message; include a field-level errors map only when there are real field-level errors. Never wrap a plain message into a fake `base` error.
+- No exception subclasses for control flow, least of all outside `StandardError`; use signals the code already carries (`errors`, a `completed` flag). Before acting on a review suggestion to redesign a base class, count the real call sites that hit the problem; if there are none, keep the local fix and document the trap.
 
 ## Ruby on Rails
 
@@ -32,6 +33,7 @@
 
 - An empty output is not a clean result. Before reporting "no errors" from lint, type-check or tests, confirm the tool actually ran (non-zero file count, known errors still reported).
 - When a codebase has pre-existing lint or type errors, compare per-file counts against the main branch instead of expecting zero.
+- A plan that wraps or extends a framework mechanism (transactions, callbacks, jobs, …) reads the current official docs for it first, cites what they add in a short "what the docs add" section, and checks each point against the installed version.
 - Before saying something recurred or is missing, prove it: check the build or commit the event came from, and check whether existing alerting or tooling already covers it.
 
 ## Shell
