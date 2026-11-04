@@ -4,16 +4,16 @@ PROMPT_NAME_MAX=24
 # Keep the start and the end of a name, drop the middle.
 function prompt_truncate_middle() {
   local name="$1"
-  (( ${#name} <= PROMPT_NAME_MAX )) && { echo -n "$name"; return }
+  (( ${#name} <= PROMPT_NAME_MAX )) && { print -rn -- "$name"; return }
   local tail=$(( (PROMPT_NAME_MAX - 1) / 2 ))
   local head=$(( PROMPT_NAME_MAX - 1 - tail ))
-  echo -n "${name[1,head]}…${name[-tail,-1]}"
+  print -rn -- "${name[1,head]}…${name[-tail,-1]}"
 }
 
 # %c with a middle-truncated name ("%" escaped for prompt expansion).
 function prompt_dir() {
   local dir="$(prompt_truncate_middle "${(%):-%c}")"
-  echo -n "${dir//\%/%%}"
+  print -rn -- "${dir//\%/%%}"
 }
 
 # Takes the output of git_prompt_info and middle-truncates the branch in it.
@@ -26,7 +26,7 @@ function prompt_git_info() {
   [[ -n "$info" ]] || return 0
   local body="${info#"$ZSH_THEME_GIT_PROMPT_PREFIX"}"
   local branch="${body%% *}"
-  echo -n "${ZSH_THEME_GIT_PROMPT_PREFIX}$(prompt_truncate_middle "$branch")${body#"$branch"}"
+  print -rn -- "${ZSH_THEME_GIT_PROMPT_PREFIX}$(prompt_truncate_middle "$branch")${body#"$branch"}"
 }
 
 PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}\$(prompt_dir)%{$reset_color%}"
