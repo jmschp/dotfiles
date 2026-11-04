@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set ENV file .zshenv
         run: cp dot-files/dot-zshenv ~/.zshenv
       - name: Run Makefile file
