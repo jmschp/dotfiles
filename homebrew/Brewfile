@@ -2,7 +2,6 @@
 
 tap 'mongodb/brew', trusted: true
 
-brew 'asdf'
 brew 'aws-elasticbeanstalk'
 brew 'awscli'
 brew 'coreutils'
@@ -18,6 +17,7 @@ brew 'libyaml'
 brew 'llvm'
 brew 'make'
 brew 'memcached'
+brew 'mise'
 brew 'mongodb-database-tools'
 # brew 'ngrok'
 brew 'openssl'

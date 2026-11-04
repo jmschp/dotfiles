@@ -4,35 +4,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Personal macOS dotfiles for bootstrapping a new machine. There is no application code: the "build" is `make`, which installs Homebrew, symlinks config files into `$HOME` with GNU Stow, and sets up zsh, asdf, Rust, AWS profiles and GPG keys. Everything is XDG Base Directory oriented (`~/.config`, `~/.local/share`, `~/.local/state`, `~/.cache`); nothing except `~/.zshenv` is meant to live directly in `$HOME`.
+Personal macOS dotfiles for bootstrapping a new machine. There is no application code: the "build" is `make`, which installs Homebrew, symlinks config files into `$HOME` with GNU Stow, and sets up zsh, mise, Rust, AWS profiles and GPG keys. Everything is XDG Base Directory oriented (`~/.config`, `~/.local/share`, `~/.local/state`, `~/.cache`); nothing except `~/.zshenv` is meant to live directly in `$HOME`.
 
 ## Commands
 
 ```zsh
 make                 # full install (the `all` target); prompts for sudo, AWS keys and a GPG backup path
 make macos           # apply macOS `defaults` from macos.sh (separate from `all`, needs a restart afterwards)
-make test-all        # CI assertions: symlinks exist, ~/.tool-versions, AWS credentials file, GNUPGHOME perms
+make test-all        # CI assertions: symlinks exist, mise tools and gems installed, AWS credentials file, GNUPGHOME perms
 make test-stow       # just check the Stow symlinks
 make stow            # re-link dot-files/ into $HOME after adding/renaming a config file
 make brew-formulae   # brew bundle --file=homebrew/Brewfile
 make brew-casks      # brew bundle --file=homebrew/Caskfile (skipped in CI)
 ```
 
-Individual targets (`asdf-ruby`, `duti`, `gpg-keys`, `aws-credentials-legado`, ...) can be run alone. The Makefile uses `SHELL:=/bin/zsh` and relies on `XDG_*`, `ZDOTDIR` and `GNUPGHOME` already being exported, so run it from a shell that has sourced `dot-files/dot-zshenv` (CI copies it to `~/.zshenv` first; `make xdg_specs` does the same).
+Individual targets (`mise`, `duti`, `gpg-keys`, `aws-credentials-legado`, ...) can be run alone. The Makefile uses `SHELL:=/bin/zsh` and relies on `XDG_*`, `ZDOTDIR` and `GNUPGHOME` already being exported, so run it from a shell that has sourced `dot-files/dot-zshenv` (CI copies it to `~/.zshenv` first; `make xdg_specs` does the same).
 
 CI (`.github/workflows/github-actions.yml`) runs `make` then `make test-all` on `macos-latest` on every push. Targets check `ifndef CI` to skip interactive or already-done steps (sudo keep-alive, Homebrew install, casks, GPG import). When adding a target that prompts or needs a GUI, guard it the same way and add a matching `test-*` assertion.
 
 ## Layout and how the pieces connect
 
 - `dot-files/` is the single Stow package. Stow is run with `--dotfiles`, so `dot-zshenv` becomes `~/.zshenv` and `dot-config/` becomes `~/.config/`. Files below `dot-config/` keep their literal names (`.zshrc`, `.zlogin` are already dotted). `--no-folding` means every file is linked individually and `--adopt` pulls pre-existing files in `$HOME` back into the repo, which will show up as a diff. When you add a config file here, also add a `test -L` line to `test-stow`.
-- `dot-files/dot-zshenv` is the root of the whole setup. It exports the XDG dirs and relocates every tool (asdf, AWS, Bundler, GnuPG, npm, Rust, irb, zsh history) into them. It is copied, not stowed, by `make xdg_specs` because `ZDOTDIR` must be set before Stow runs; `make stow` then replaces the copy with a symlink.
-- Zsh loads from `$ZDOTDIR` (`~/.config/zsh`): `.zshrc` is the Oh My Zsh config (plugins list, theme `robbyrussell-custom`), `.zlogin` holds aliases and PATH additions (asdf shims, `./bin`). Oh My Zsh itself is installed into `$ZDOTDIR/ohmyzsh`; `ohmyzsh-custom/` is a second Stow package targeted at `$ZDOTDIR/ohmyzsh/custom` (currently only the prompt theme).
+- `dot-files/dot-zshenv` is the root of the whole setup. It exports the XDG dirs and relocates every tool (AWS, Bundler, GnuPG, npm, Rust, irb, zsh history) into them; mise needs no variables because it honours the XDG dirs by default. It is copied, not stowed, by `make xdg_specs` because `ZDOTDIR` must be set before Stow runs; `make stow` then replaces the copy with a symlink.
+- Zsh loads from `$ZDOTDIR` (`~/.config/zsh`): `.zshrc` is the Oh My Zsh config (plugins list, theme `robbyrussell-custom`), `.zlogin` holds aliases, the `gsweep` function and PATH additions (`./bin`). The Oh My Zsh `mise` plugin in `.zshrc` runs `mise activate zsh`; it must stay after `brew` in `plugins=(...)`, because the `brew` plugin is what puts `/opt/homebrew/bin` on PATH and the `mise` plugin returns silently if `mise` is not found. Oh My Zsh itself is installed into `$ZDOTDIR/ohmyzsh`; `ohmyzsh-custom/` is a second Stow package targeted at `$ZDOTDIR/ohmyzsh/custom` (currently only the prompt theme).
 - `dot-config/git/hooks/worktree-copy` is a global `post-checkout` hook registered in the git config with `hook.worktree-copy.*` (config-based hooks, Git 2.54+), so it runs alongside each repo's own `.git/hooks`. On `git worktree add` it copies the untracked files matching the main checkout's `.worktreeinclude` (gitignore syntax, the same file Claude Code reads for its own worktrees; globally ignored in `dot-config/git/ignore`) into the new worktree; repos without that file are untouched. Keep it exiting 0: a post-checkout hook's status becomes the checkout's exit status.
 - `dot-files/dot-claude/` holds the user-level Claude Code files stowed into `~/.claude`: `CLAUDE.md` (global instructions) and `settings.json` (permissions, model, hooks, plugins). Only those are tracked; the rest of `~/.claude` (sessions, caches, history) stays local. Claude Code writes to `settings.json` itself (`/config`, plugin toggles), and because it is a symlink those writes land in the repo and show up as a diff to review. The hooks point at `~/.config/iterm2/cc-status`, a symlink that iTerm2's Claude Code integration installs; it is not part of the dotfiles.
 - `homebrew/Brewfile` (formulae and taps) and `homebrew/Caskfile` (GUI apps) are separate so CI can install formulae without casks.
 - `.duti` maps file extensions to default apps. The bundle id `com.todesktop.230313mzl4w4u92` is Cursor.
 - `macos.sh` is a standalone `defaults write` script, grouped by System Settings pane.
-- asdf manages Node, Python and Ruby; versions are written to `~/.tool-versions` at install time (latest LTS / latest 3.x), not pinned in the repo. `dot-config/asdf/default-gems` lists gems auto-installed with every Ruby.
+- mise manages Node, Python and Ruby from `dot-config/mise/config.toml` (`node = "lts"`, `python = "3"`, `ruby = "4"`, resolved to the newest match at install time). Project `mise.toml`, `.tool-versions` and idiomatic files (`.nvmrc`, `.ruby-version`, ...) override it; the idiomatic ones are opt-in via `idiomatic_version_file_enable_tools`. The default gem list is a `postinstall` on the Ruby entry. The config is a stowed symlink, so `mise use -g` and `mise settings set` write into the repo and show up as a diff to review. A stray `~/.tool-versions` is read as a parent-dir config and overrides the global one; do not create it.
 
 ## Secret redaction filter (important)
 

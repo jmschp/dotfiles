@@ -1,0 +1,23 @@
+# Global mise config: https://mise.jdx.dev/configuration.html
+# Project mise.toml / .tool-versions / idiomatic version files override these.
+# mise honours XDG_CONFIG_HOME/XDG_DATA_HOME/XDG_CACHE_HOME/XDG_STATE_HOME; no MISE_* vars needed.
+
+[settings]
+# Read .nvmrc/.node-version/package.json, .ruby-version/Gemfile, .python-version(s),
+# like asdf's `legacy_version_file = yes`.
+idiomatic_version_file_enable_tools = ["node", "python", "ruby"]
+# mise.toml files under ~/code load without a `mise trust` prompt.
+trusted_config_paths = ["~/code"]
+
+[settings.node]
+# Same as ASDF_NODEJS_AUTO_ENABLE_COREPACK=true.
+corepack = true
+
+[tools]
+node = "lts"
+python = "3"
+
+[tools.ruby]
+version = "4"
+# Replaces dot-config/asdf/default-gems: runs once after this Ruby is installed, with its bin on PATH.
+postinstall = "gem install --no-document htmlbeautifier ruby-lsp ruby-lsp-rails ruby-lsp-rspec rubocop rubocop-factory_bot rubocop-performance rubocop-rails rubocop-rake rubocop-rspec webrick"

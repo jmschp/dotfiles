@@ -31,7 +31,6 @@ gsweep() {
 ###### Functions
 
 ###### PATH
-path=("$ASDF_DATA_DIR/shims" $path)
 # path=("/opt/homebrew/opt/coreutils/libexec/gnubin" $path)
 # path=("/opt/homebrew/opt/grep/libexec/gnubin" $path)
 # path=("/opt/homebrew/opt/make/libexec/gnubin" $path)

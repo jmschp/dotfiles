@@ -66,20 +66,3 @@ ZSH_THEME_GIT_PROMPT_DIVERGED_REMOTE="%{$fg_bold[yellow]%}%1{⇆%}%{$reset_color
 # 'AHEAD'     "$ZSH_THEME_GIT_PROMPT_AHEAD"
 # 'BEHIND'    "$ZSH_THEME_GIT_PROMPT_BEHIND"
 # 'DIVERGED'  "$ZSH_THEME_GIT_PROMPT_DIVERGED"
-
-# Ruby prompt
-# function asdf_ruby_prompt_info() {
-#   local ruby=$(asdf current ruby)
-#   ZSH_THEME_RUBY_PROMPT_PREFIX="%{$fg_bold[red]%}%1{◆%}%{$reset_color%}ruby:"
-#   ZSH_THEME_RUBY_PROMPT_SUFFIX="${ruby[(w)2]}"
-#   echo "${ZSH_THEME_RUBY_PROMPT_PREFIX}${ZSH_THEME_RUBY_PROMPT_SUFFIX}"
-# }
-
-# function asdf_nodejs_prompt_info() {
-#   local nodejs=$(asdf current nodejs)
-#   ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_bold[green]%}%1{⬢%}%{$reset_color%}nodejs:"
-#   ZSH_THEME_NVM_PROMPT_SUFFIX="${nodejs[(w)2]}"
-#   echo "${ZSH_THEME_NVM_PROMPT_PREFIX}${nvm_prompt:gs/%/%%}${ZSH_THEME_NVM_PROMPT_SUFFIX}"
-# }
-
-# RPROMPT+='$(asdf_ruby_prompt_info) $(asdf_nodejs_prompt_info)'
