@@ -8,8 +8,8 @@ My macOS setup, installed with a single `make`. Config files are symlinked into 
 
 - **Homebrew** with formulae from `homebrew/Brewfile` and GUI apps from `homebrew/Caskfile`
 - **Zsh** with [Oh My Zsh](https://ohmyz.sh/), a custom `robbyrussell` theme, `zsh-autosuggestions` and `zsh-syntax-highlighting`
-- **asdf** with the latest Node LTS, Python 3 and Ruby 3, plus a default gem set (`ruby-lsp`, `rubocop`, ...)
-- **Rust** via `rustup`
+- **mise** with the latest Node LTS, Python 3, Ruby 4 and Rust stable, plus a default gem set (`ruby-lsp`, `rubocop`, ...) installed by a `postinstall` hook on the Ruby entry
+- **Rust** (stable toolchain) via mise, which drives rustup
 - **Git** config with GPG-signed commits, Cursor as diff/merge tool and a global ignore file
 - **AWS CLI** profiles, with credentials prompted for during install
 - **GPG** keys restored from a backup you point to during install
@@ -64,12 +64,12 @@ Every step of the install is its own target, so you can rerun just one:
 | `make stow` | Symlink `dot-files/` into `$HOME` again after editing or adding a config file |
 | `make brew-formulae` / `make brew-casks` | Install from the Brewfile / Caskfile |
 | `make ohmyzsh`, `make ohmyzsh-plugins` | Install Oh My Zsh and the two custom plugins |
-| `make asdf` | Add asdf plugins and install Node, Python and Ruby |
+| `make mise` | Install Node, Python, Ruby and Rust from `~/.config/mise/config.toml` |
 | `make duti` | Reapply default applications from `.duti` |
 | `make aws-credentials` | Configure AWS profiles (prompts for keys) |
 | `make gpg-keys` | Set up `GNUPGHOME` and import a key backup |
 | `make macos` | Run `macos.sh` |
-| `make test-all` | Verify the install (symlinks, asdf versions, AWS credentials, GPG permissions) |
+| `make test-all` | Verify the install (symlinks, mise tools and gems, AWS credentials, GPG permissions) |
 
 ## Repository layout
 
@@ -79,7 +79,7 @@ dot-files/            Stow package; `dot-` prefix becomes `.` in $HOME
   dot-config/         becomes ~/.config
     zsh/              .zshrc (Oh My Zsh, plugins, theme) and .zlogin (aliases, PATH)
     git/              config and global ignore
-    asdf/ aws/ irb/ ngrok/ npm/
+    aws/ irb/ mise/ ngrok/ npm/
   dot-claude/         becomes ~/.claude (Claude Code user-level CLAUDE.md and settings.json)
 ohmyzsh-custom/       Stow package targeted at $ZDOTDIR/ohmyzsh/custom (theme)
 homebrew/             Brewfile (formulae) and Caskfile (GUI apps)

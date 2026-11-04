@@ -10,7 +10,7 @@ define done
 @printf "\033[1;32m==> Done\033[0m\n"
 endef
 
-all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti rust asdf aws-credentials gpg-keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti mise aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -85,38 +85,10 @@ duti:
 	@/opt/homebrew/bin/duti -v .duti
 	$(call done)
 
-rust:
-	$(call log,Installing Rust)
-	@/opt/homebrew/bin/brew link --force rustup
-	@/opt/homebrew/bin/rustup default stable
-	$(call done)
-
-asdf: asdf-plugins asdf-nodejs asdf-python asdf-ruby
-
-asdf-plugins:
-	$(call log,Adding asdf-alias plugin)
-	@asdf plugin add alias
-	@asdf plugin add nodejs
-	@asdf plugin add python
-	@asdf plugin add ruby
-	$(call done)
-
-asdf-nodejs:
-	$(call log,Installing nodejs $$(asdf cmd nodejs resolve lts))
-	@asdf set --home nodejs $$(asdf cmd nodejs resolve lts)
-	@asdf install nodejs
-	$(call done)
-
-asdf-python:
-	$(call log,Installing python $$(asdf latest python 3))
-	@asdf set --home python $$(asdf latest python 3)
-	@asdf install python
-	$(call done)
-
-asdf-ruby:
-	$(call log,Installing ruby $$(asdf latest ruby 3))
-	@asdf set --home ruby $$(asdf latest ruby 3)
-	@asdf install ruby
+mise:
+	$(call log,Installing Node LTS / Python 3 / Ruby 4 / Rust stable with mise)
+	@/opt/homebrew/bin/mise install
+	@/opt/homebrew/bin/mise ls --current
 	$(call done)
 
 aws-credentials: aws-credentials-arqshoah aws-credentials-legado
@@ -159,16 +131,15 @@ macos:
 
 # Tests
 
-test-all: test-stow test-asdf-tools test-aws-credentials test-gpg
+test-all: test-stow test-mise-tools test-aws-credentials test-gpg
 
 test-stow:
 	$(call log,Testing dotfiles)
-	test -L "$(XDG_CONFIG_HOME)/asdf/asdfrc"
-	test -L "$(XDG_CONFIG_HOME)/asdf/default-gems"
 	test -L "$(XDG_CONFIG_HOME)/aws/config"
 	test -L "$(XDG_CONFIG_HOME)/git/config"
 	test -L "$(XDG_CONFIG_HOME)/git/hooks/worktree-copy"
 	test -L "$(XDG_CONFIG_HOME)/git/ignore"
+	test -L "$(XDG_CONFIG_HOME)/mise/config.toml"
 	test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
@@ -178,9 +149,18 @@ test-stow:
 	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
 	$(call done)
 
-test-asdf-tools:
-	$(call log,Testing asdf tool versions)
-	@[[ -s "$(HOME)/.tool-versions" ]]
+test-mise-tools:
+	$(call log,Testing mise tools)
+	@/opt/homebrew/bin/mise install --dry-run-code
+	@/opt/homebrew/bin/mise exec -- node --version
+	@/opt/homebrew/bin/mise exec -- python --version
+	@/opt/homebrew/bin/mise exec -- ruby --version
+	@/opt/homebrew/bin/mise exec -- cargo --version
+	@gems=$$(/opt/homebrew/bin/mise config get tools.ruby.postinstall | sed "s/^gem install --no-document //"); \
+	[[ -n $$gems ]] || { echo "no gem list found in tools.ruby.postinstall"; exit 1; }; \
+	for gem in $${=gems}; do \
+		/opt/homebrew/bin/mise exec -- gem list --installed --exact $$gem >/dev/null || { echo "missing gem: $$gem"; exit 1; }; \
+	done
 	$(call done)
 
 test-aws-credentials:
