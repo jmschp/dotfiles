@@ -18,6 +18,7 @@ corepack = true
 [tools]
 node = "lts"
 python = "3"
+rust = "stable"
 
 [tools.ruby]
 version = "4"

@@ -10,7 +10,7 @@ define done
 @printf "\033[1;32m==> Done\033[0m\n"
 endef
 
-all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti rust mise aws-credentials gpg-keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti mise aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -86,14 +86,8 @@ duti:
 	@/opt/homebrew/bin/duti -v .duti
 	$(call done)
 
-rust:
-	$(call log,Installing Rust)
-	@/opt/homebrew/bin/brew link --force rustup
-	@/opt/homebrew/bin/rustup default stable
-	$(call done)
-
 mise:
-	$(call log,Installing Node LTS / Python 3 / Ruby 4 with mise)
+	$(call log,Installing Node LTS / Python 3 / Ruby 4 / Rust stable with mise)
 	@/opt/homebrew/bin/mise install
 	@/opt/homebrew/bin/mise ls --current
 	$(call done)
@@ -162,6 +156,7 @@ test-mise-tools:
 	@/opt/homebrew/bin/mise exec -- node --version
 	@/opt/homebrew/bin/mise exec -- python --version
 	@/opt/homebrew/bin/mise exec -- ruby --version
+	@/opt/homebrew/bin/mise exec -- cargo --version
 	@gems=$$(/opt/homebrew/bin/mise config get tools.ruby.postinstall | sed "s/^gem install --no-document //"); \
 	[[ -n $$gems ]] || { echo "no gem list found in tools.ruby.postinstall"; exit 1; }; \
 	for gem in $${=gems}; do \
