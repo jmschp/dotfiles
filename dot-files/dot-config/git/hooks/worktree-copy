@@ -14,7 +14,7 @@ main=${main:h:A}
 # Skip clones (the checkout is the main one) and repos without a .worktreeinclude.
 [[ $main != ${PWD:A} && -f $main/.worktreeinclude ]] || exit 0
 
-for f in ${(f)"$(git -C $main ls-files --others --ignored --exclude-from=.worktreeinclude)"}; do
+for f in ${(0)"$(git -C $main ls-files -z --others --ignored --exclude-from=.worktreeinclude)"}; do
   [[ -e $f ]] && continue
   mkdir -p ${f:h} && cp -p $main/$f $f && print -u2 "worktree-copy: copied $f"
 done
