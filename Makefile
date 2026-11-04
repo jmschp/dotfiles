@@ -42,9 +42,8 @@ ifndef CI
 	$(call done)
 endif
 ifdef CI
-	$(call log,Updating Brew formulae)
+	$(call log,Updating Homebrew)
 	@/opt/homebrew/bin/brew update
-	@/opt/homebrew/bin/brew upgrade
 	$(call done)
 endif
 
