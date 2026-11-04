@@ -6,8 +6,10 @@
 # Read .nvmrc/.node-version/package.json, .ruby-version/Gemfile, .python-version(s),
 # like asdf's `legacy_version_file = yes`.
 idiomatic_version_file_enable_tools = ["node", "python", "ruby"]
-# mise.toml files under ~/code load without a `mise trust` prompt.
-trusted_config_paths = ["~/code"]
+# Trusted without a `mise trust` prompt: only trees whose mise.toml files I or my
+# team write. A trusted mise.toml runs [env], [hooks] and postinstall code on `cd`,
+# so anything else cloned under ~/code must be trusted explicitly, once per directory.
+trusted_config_paths = ["~/code/dotfiles", "~/code/ln", "~/code/legado-bnai-brith-brasil"]
 
 [settings.node]
 # Same as ASDF_NODEJS_AUTO_ENABLE_COREPACK=true.
@@ -20,4 +22,5 @@ python = "3"
 [tools.ruby]
 version = "4"
 # Replaces dot-config/asdf/default-gems: runs once after this Ruby is installed, with its bin on PATH.
+# `make test-mise-tools` reads this list back with `mise config get tools.ruby.postinstall`.
 postinstall = "gem install --no-document htmlbeautifier ruby-lsp ruby-lsp-rails ruby-lsp-rspec rubocop rubocop-factory_bot rubocop-performance rubocop-rails rubocop-rake rubocop-rspec webrick"
