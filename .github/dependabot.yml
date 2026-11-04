@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Keep the actions in .github/workflows current (e.g. Node.js runtime deprecations).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
