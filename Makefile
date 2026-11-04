@@ -94,7 +94,6 @@ rust:
 
 mise:
 	$(call log,Installing Node LTS / Python 3 / Ruby 4 with mise)
-	@/opt/homebrew/bin/mise trust "$(XDG_CONFIG_HOME)/mise/config.toml"
 	@/opt/homebrew/bin/mise install
 	@/opt/homebrew/bin/mise ls --current
 	$(call done)
@@ -163,8 +162,10 @@ test-mise-tools:
 	@/opt/homebrew/bin/mise exec -- node --version
 	@/opt/homebrew/bin/mise exec -- python --version
 	@/opt/homebrew/bin/mise exec -- ruby --version
-	@for gem in htmlbeautifier ruby-lsp ruby-lsp-rails ruby-lsp-rspec rubocop rubocop-factory_bot rubocop-performance rubocop-rails rubocop-rake rubocop-rspec webrick; do \
-		/opt/homebrew/bin/mise exec -- gem list --installed --exact $$gem >/dev/null || exit 1; \
+	@gems=$$(/opt/homebrew/bin/mise config get tools.ruby.postinstall | sed "s/^gem install --no-document //"); \
+	[[ -n $$gems ]] || { echo "no gem list found in tools.ruby.postinstall"; exit 1; }; \
+	for gem in $${=gems}; do \
+		/opt/homebrew/bin/mise exec -- gem list --installed --exact $$gem >/dev/null || { echo "missing gem: $$gem"; exit 1; }; \
 	done
 	$(call done)
 
