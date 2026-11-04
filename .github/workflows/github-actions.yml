@@ -1,6 +1,14 @@
 name: Test dotfiles
 run-name: ${{ github.actor }} is testing dotfiles 🚀
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    # Mondays 06:00 UTC. The install depends on upstream installers, Homebrew
+    # formulae and mise releases; a weekly run catches rot without a push.
+    - cron: "0 6 * * 1"
+permissions:
+  contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -13,9 +21,11 @@ defaults:
 jobs:
   dotfiles-install:
     runs-on: macos-latest
+    # The full run takes ~9 minutes; a hung interactive step must not burn hours.
+    timeout-minutes: 30
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set ENV file .zshenv
         run: cp dot-files/dot-zshenv ~/.zshenv
       - name: Run Makefile file
