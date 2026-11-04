@@ -36,7 +36,8 @@ path=("$ASDF_DATA_DIR/shims" $path)
 # path=("/opt/homebrew/opt/grep/libexec/gnubin" $path)
 # path=("/opt/homebrew/opt/make/libexec/gnubin" $path)
 # path=("/opt/homebrew/opt/llvm/bin" $path)
-path=("./bin" $path)
+# Appended, not prepended: a repo's bin/ may add commands but must not shadow installed ones.
+path+=("./bin")
 ###### PATH
 
 ###### Ngrok completions
