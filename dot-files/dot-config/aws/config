@@ -3,9 +3,6 @@ output = json
 region = us-east-2
 sso_session = legalnature
 
-[profile arqshoah]
-region = us-east-1
-
 [profile legado]
 region = us-east-1
 
@@ -15,12 +12,6 @@ sso_region = us-east-2
 sso_registration_scopes = sso:account:access
 
 # Dev
-[profile legalnature-dev-AdministratorAccess]
-sso_session = legalnature
-# gitignoreSecret
-sso_account_id = [REDACTED]
-sso_role_name = AdministratorAccess
-
 [profile legalnature-dev-DeveloperAccess]
 sso_session = legalnature
 # gitignoreSecret
@@ -28,12 +19,6 @@ sso_account_id = [REDACTED]
 sso_role_name = DeveloperAccess
 
 # Stage
-[profile legalnature-stage-AdministratorAccess]
-sso_session = legalnature
-# gitignoreSecret
-sso_account_id = [REDACTED]
-sso_role_name = AdministratorAccess
-
 [profile legalnature-stage-DeveloperAccess]
 sso_session = legalnature
 # gitignoreSecret
@@ -41,28 +26,8 @@ sso_account_id = [REDACTED]
 sso_role_name = DeveloperAccess
 
 # Shared
-[profile legalnature-shared-AdministratorAccess]
-sso_session = legalnature
-# gitignoreSecret
-sso_account_id = [REDACTED]
-sso_role_name = AdministratorAccess
-
 [profile legalnature-shared-DeveloperAccess]
 sso_session = legalnature
 # gitignoreSecret
 sso_account_id = [REDACTED]
 sso_role_name = DeveloperAccess
-
-# Prod
-[profile legalnature-prod-AdministratorAccess]
-sso_session = legalnature
-# gitignoreSecret
-sso_account_id = [REDACTED]
-sso_role_name = AdministratorAccess
-
-# Management
-[profile legalnature-management-AdministratorAccess]
-sso_session = legalnature
-# gitignoreSecret
-sso_account_id = [REDACTED]
-sso_role_name = AdministratorAccess
