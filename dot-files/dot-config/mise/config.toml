@@ -23,7 +23,7 @@ python = "3"
 rust = "stable"
 # Claude Code from Anthropic's GitHub release tarballs (checksummed). Its own updater must not
 # touch a mise-managed install (DISABLE_AUTOUPDATER=1 in dot-claude/settings.json), so mise
-# updates it instead: auto_update checks once per tool_update.check_duration (24h) and, in an
+# updates it instead: auto_update checks once per tool_update.check_duration (24h by default) and, in an
 # activated shell, upgrades in the background at the next prompt. Manual: `mise upgrade claude`.
 claude = { version = "latest", auto_update = true }
 
