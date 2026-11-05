@@ -10,6 +10,10 @@ idiomatic_version_file_enable_tools = ["node", "python", "ruby"]
 # team write. A trusted mise.toml runs [env], [hooks] and postinstall code on `cd`,
 # so anything else cloned under ~/code must be trusted explicitly, once per directory.
 trusted_config_paths = ["~/code/dotfiles", "~/code/ln", "~/code/legado-bnai-brith-brasil"]
+# The second devtools checkout (for proposing team changes) must not load the team config a
+# second time. mise bootstrap marks it ignored, but a path trusted above wins over that mark;
+# this setting wins over both.
+ignored_config_paths = ["~/code/ln/devtools"]
 
 [settings.node]
 # Same as ASDF_NODEJS_AUTO_ENABLE_COREPACK=true.
