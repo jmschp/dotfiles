@@ -10,6 +10,8 @@ idiomatic_version_file_enable_tools = ["node", "python", "ruby"]
 # team write. A trusted mise.toml runs [env], [hooks] and postinstall code on `cd`,
 # so anything else cloned under ~/code must be trusted explicitly, once per directory.
 trusted_config_paths = ["~/code/dotfiles", "~/code/ln", "~/code/legado-bnai-brith-brasil"]
+# ignored_config_paths lives in miserc.toml next to this file: mise reads it before any
+# config file loads, so it has no effect here.
 
 [settings.node]
 # Same as ASDF_NODEJS_AUTO_ENABLE_COREPACK=true.
@@ -19,6 +21,11 @@ corepack = true
 node = "lts"
 python = "3"
 rust = "stable"
+# Claude Code from Anthropic's GitHub release tarballs (checksummed). Its own updater must not
+# touch a mise-managed install (DISABLE_AUTOUPDATER=1 in dot-claude/settings.json), so mise
+# updates it instead: auto_update checks once per tool_update.check_duration (24h by default) and, in an
+# activated shell, upgrades in the background at the next prompt. Manual: `mise upgrade claude`.
+claude = { version = "latest", auto_update = true }
 
 [tools.ruby]
 version = "4"

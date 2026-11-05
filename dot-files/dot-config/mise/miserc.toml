@@ -1,0 +1,7 @@
+# Settings mise reads before loading any config file (no [settings] table here).
+# https://mise.jdx.dev/configuration/settings.html, "Settings read before config files".
+
+# The second legalnature/devtools checkout, cloned by `mise bootstrap` for proposing team
+# changes, must not load the team config a second time. bootstrap marks it ignored, but the
+# trusted_config_paths entry for ~/code/ln in config.toml outranks that mark; this outranks both.
+ignored_config_paths = ["~/code/ln/devtools"]

@@ -1,0 +1,4 @@
+# Keys here have custom names, so name them per host; ssh only tries id_* by default.
+Host github.com
+  IdentityFile ~/.ssh/jmschp_id_rsa
+  IdentitiesOnly yes
