@@ -86,7 +86,7 @@ duti:
 	$(call done)
 
 mise:
-	$(call log,Installing Node LTS / Python 3 / Ruby 4 / Rust stable with mise)
+	$(call log,Installing Node LTS / Python 3 / Ruby 4 / Rust stable / Claude Code with mise)
 	@/opt/homebrew/bin/mise install
 	@/opt/homebrew/bin/mise ls --current
 	$(call done)
@@ -156,6 +156,7 @@ test-mise-tools:
 	@/opt/homebrew/bin/mise exec -- python --version
 	@/opt/homebrew/bin/mise exec -- ruby --version
 	@/opt/homebrew/bin/mise exec -- cargo --version
+	@/opt/homebrew/bin/mise exec -- claude --version
 	@gems=$$(/opt/homebrew/bin/mise config get tools.ruby.postinstall | sed "s/^gem install --no-document //"); \
 	[[ -n $$gems ]] || { echo "no gem list found in tools.ruby.postinstall"; exit 1; }; \
 	for gem in $${=gems}; do \

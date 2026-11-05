@@ -2,6 +2,7 @@
 
 cask 'arduino-ide'
 cask 'chatgpt'
+cask 'claude'
 cask 'clickup'
 cask 'cyberduck'
 cask 'dbeaver-community'

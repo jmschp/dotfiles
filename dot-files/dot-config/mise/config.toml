@@ -19,6 +19,9 @@ corepack = true
 node = "lts"
 python = "3"
 rust = "stable"
+# Claude Code from Anthropic's GitHub release tarballs (checksummed). Its own updater is
+# disabled in dot-claude/settings.json; update with `mise upgrade claude`.
+claude = "latest"
 
 [tools.ruby]
 version = "4"

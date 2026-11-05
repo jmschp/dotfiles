@@ -10,6 +10,7 @@ My macOS setup, installed with a single `make`. Config files are symlinked into 
 - **Zsh** with [Oh My Zsh](https://ohmyz.sh/), a custom `robbyrussell` theme, `zsh-autosuggestions` and `zsh-syntax-highlighting`
 - **mise** with the latest Node LTS, Python 3, Ruby 4 and Rust stable, plus a default gem set (`ruby-lsp`, `rubocop`, ...) installed by a `postinstall` hook on the Ruby entry
 - **Rust** (stable toolchain) via mise, which drives rustup
+- **Claude Code** via mise, from Anthropic's GitHub release tarballs; its self-updater is off, so `mise upgrade claude` updates it. The Claude desktop app comes from the Caskfile.
 - **Git** config with GPG-signed commits, Cursor as diff/merge tool and a global ignore file
 - **AWS CLI** profiles, with credentials prompted for during install
 - **GPG** keys restored from a backup you point to during install
@@ -64,7 +65,7 @@ Every step of the install is its own target, so you can rerun just one:
 | `make stow` | Symlink `dot-files/` into `$HOME` again after editing or adding a config file |
 | `make brew-formulae` / `make brew-casks` | Install from the Brewfile / Caskfile |
 | `make ohmyzsh`, `make ohmyzsh-plugins` | Install Oh My Zsh and the two custom plugins |
-| `make mise` | Install Node, Python, Ruby and Rust from `~/.config/mise/config.toml` |
+| `make mise` | Install Node, Python, Ruby, Rust and Claude Code from `~/.config/mise/config.toml` |
 | `make duti` | Reapply default applications from `.duti` |
 | `make aws-credentials` | Configure AWS profiles (prompts for keys) |
 | `make gpg-keys` | Set up `GNUPGHOME` and import a key backup |
