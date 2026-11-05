@@ -140,6 +140,7 @@ test-stow:
 	test -L "$(XDG_CONFIG_HOME)/git/hooks/worktree-copy"
 	test -L "$(XDG_CONFIG_HOME)/git/ignore"
 	test -L "$(XDG_CONFIG_HOME)/mise/config.toml"
+	test -L "$(XDG_CONFIG_HOME)/mise/miserc.toml"
 	test -L "$(XDG_CONFIG_HOME)/ngrok/ngrok.yml"
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zshrc"
 	test -L "$(XDG_CONFIG_HOME)/zsh/.zlogin"
