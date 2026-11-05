@@ -1,4 +1,7 @@
 {
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
+  },
   "permissions": {
     "allow": [],
     "defaultMode": "bypassPermissions"
@@ -106,7 +109,8 @@
     ]
   },
   "enabledPlugins": {
-    "ruby-lsp@claude-plugins-official": true
+    "ruby-lsp@claude-plugins-official": true,
+    "tower@tower": true
   },
   "voice": {
     "enabled": true,
@@ -116,8 +120,5 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "env": {
-    "DISABLE_AUTOUPDATER": "1"
-  }
+  "agentPushNotifEnabled": true
 }
