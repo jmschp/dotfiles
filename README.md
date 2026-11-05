@@ -10,7 +10,7 @@ My macOS setup, installed with a single `make`. Config files are symlinked into 
 - **Zsh** with [Oh My Zsh](https://ohmyz.sh/), a custom `robbyrussell` theme, `zsh-autosuggestions` and `zsh-syntax-highlighting`
 - **mise** with the latest Node LTS, Python 3, Ruby 4 and Rust stable, plus a default gem set (`ruby-lsp`, `rubocop`, ...) installed by a `postinstall` hook on the Ruby entry
 - **Rust** (stable toolchain) via mise, which drives rustup
-- **Claude Code** via mise, from Anthropic's GitHub release tarballs; its self-updater is off, so `mise upgrade claude` updates it. The Claude desktop app comes from the Caskfile.
+- **Claude Code** via mise, from Anthropic's GitHub release tarballs; its self-updater is off and mise auto-updates it instead (`auto_update = true`). The Claude desktop app comes from the Caskfile.
 - **Git** config with GPG-signed commits, Cursor as diff/merge tool and a global ignore file
 - **AWS CLI** profiles, with credentials prompted for during install
 - **GPG** keys restored from a backup you point to during install
