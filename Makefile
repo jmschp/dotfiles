@@ -146,6 +146,13 @@ test-stow:
 	test -L "$(HOME)/.ssh/config"
 	test -L "$(HOME)/.claude/CLAUDE.md"
 	test -L "$(HOME)/.claude/settings.json"
+	test -L "$(HOME)/.claude/rules/ruby-rails.md"
+	test -L "$(HOME)/.claude/rules/vue-nuxt.md"
+	test -L "$(HOME)/.claude/skills/dependency-updates/SKILL.md"
+	test -L "$(HOME)/.claude/skills/gh-stack/SKILL.md"
+	test -L "$(HOME)/.claude/skills/gh-stack/references/commands.md"
+	test -L "$(HOME)/.claude/skills/gh-stack/references/stack-design.md"
+	test -L "$(HOME)/.claude/skills/gh-stack/references/troubleshooting.md"
 	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
 	$(call done)
 

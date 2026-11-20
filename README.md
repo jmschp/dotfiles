@@ -81,7 +81,7 @@ dot-files/            Stow package; `dot-` prefix becomes `.` in $HOME
     zsh/              .zshrc (Oh My Zsh, plugins, theme) and .zlogin (aliases, PATH)
     git/              config and global ignore
     aws/ irb/ mise/ ngrok/ npm/
-  dot-claude/         becomes ~/.claude (Claude Code user-level CLAUDE.md and settings.json)
+  dot-claude/         becomes ~/.claude (Claude Code user-level CLAUDE.md, rules/, skills/, settings.json)
   dot-ssh/            becomes ~/.ssh (config only: which key to use for github.com; no keys)
 ohmyzsh-custom/       Stow package targeted at $ZDOTDIR/ohmyzsh/custom (theme)
 homebrew/             Brewfile (formulae) and Caskfile (GUI apps)
