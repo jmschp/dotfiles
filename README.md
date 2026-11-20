@@ -10,7 +10,7 @@ My macOS setup, installed with a single `make`. Config files are symlinked into 
 - **Zsh** with [Oh My Zsh](https://ohmyz.sh/), a custom `robbyrussell` theme, `zsh-autosuggestions` and `zsh-syntax-highlighting`
 - **mise** with the latest Node LTS, Python 3, Ruby 4 and Rust stable, plus a default gem set (`ruby-lsp`, `rubocop`, ...) installed by a `postinstall` hook on the Ruby entry
 - **Rust** (stable toolchain) via mise, which drives rustup
-- **Claude Code** via mise, from Anthropic's GitHub release tarballs; its self-updater is off and mise auto-updates it instead (`auto_update = true`). The Claude desktop app comes from the Caskfile.
+- **Claude Code** via mise, from Anthropic's GitHub release tarballs; its self-updater is off and mise auto-updates it instead (`auto_update = true`). The Claude desktop app comes from the Caskfile. My user-level instructions, rules and skills for it are stowed from `dot-files/dot-claude/`; the `gh stack` extension and its skill come from `gh` (`make gh-tools`).
 - **Git** config with GPG-signed commits, Cursor as diff/merge tool and a global ignore file
 - **AWS CLI** profiles, with credentials prompted for during install
 - **GPG** keys restored from a backup you point to during install
@@ -66,6 +66,7 @@ Every step of the install is its own target, so you can rerun just one:
 | `make brew-formulae` / `make brew-casks` | Install from the Brewfile / Caskfile |
 | `make ohmyzsh`, `make ohmyzsh-plugins` | Install Oh My Zsh and the two custom plugins |
 | `make mise` | Install Node, Python, Ruby, Rust and Claude Code from `~/.config/mise/config.toml` |
+| `make gh-tools` | Install the `gh stack` extension and its Claude Code skill through `gh` (needs `gh auth login` first) |
 | `make duti` | Reapply default applications from `.duti` |
 | `make aws-credentials` | Configure AWS profiles (prompts for keys) |
 | `make gpg-keys` | Set up `GNUPGHOME` and import a key backup |
@@ -81,7 +82,7 @@ dot-files/            Stow package; `dot-` prefix becomes `.` in $HOME
     zsh/              .zshrc (Oh My Zsh, plugins, theme) and .zlogin (aliases, PATH)
     git/              config and global ignore
     aws/ irb/ mise/ ngrok/ npm/
-  dot-claude/         becomes ~/.claude (Claude Code user-level CLAUDE.md and settings.json)
+  dot-claude/         becomes ~/.claude (Claude Code user-level CLAUDE.md, rules/, skills/, settings.json)
   dot-ssh/            becomes ~/.ssh (config only: which key to use for github.com; no keys)
 ohmyzsh-custom/       Stow package targeted at $ZDOTDIR/ohmyzsh/custom (theme)
 homebrew/             Brewfile (formulae) and Caskfile (GUI apps)

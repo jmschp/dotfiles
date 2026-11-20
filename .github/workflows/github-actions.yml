@@ -13,6 +13,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
+  # gh needs a token for `make gh-tools` (extension and skill installs); the workflow token can read public repos.
+  GH_TOKEN: ${{ github.token }}
   aws_access_key_id: fake_aws_access_key_id
   aws_secret_access_key: fake_aws_secret_access_key
 defaults:
