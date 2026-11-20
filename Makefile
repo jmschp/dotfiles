@@ -10,7 +10,7 @@ define done
 @printf "\033[1;32m==> Done\033[0m\n"
 endef
 
-all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti mise aws-credentials gpg-keys
+all: sudo xdg_specs brew stow ohmyzsh stow-ohmyzsh-custom ohmyzsh-plugins duti mise gh-tools aws-credentials gpg-keys
 
 sudo:
 ifndef CI
@@ -89,6 +89,16 @@ mise:
 	@/opt/homebrew/bin/mise ls --current
 	$(call done)
 
+gh-tools:
+	$(call log,Installing gh extensions and agent skills)
+	@if /opt/homebrew/bin/gh auth status >/dev/null 2>&1; then \
+		/opt/homebrew/bin/gh extension list | grep -q "github/gh-stack" || /opt/homebrew/bin/gh extension install github/gh-stack; \
+		/opt/homebrew/bin/gh skill install github/gh-stack gh-stack --agent claude-code --scope user --force; \
+	else \
+		echo "gh is not signed in; run \`gh auth login\` and then \`make gh-tools\`"; \
+	fi
+	$(call done)
+
 aws-credentials: aws-credentials-arqshoah aws-credentials-legado
 
 aws-credentials-arqshoah:
@@ -129,7 +139,7 @@ macos:
 
 # Tests
 
-test-all: test-stow test-mise-tools test-aws-credentials test-gpg
+test-all: test-stow test-mise-tools test-gh-tools test-aws-credentials test-gpg
 
 test-stow:
 	$(call log,Testing dotfiles)
@@ -149,10 +159,6 @@ test-stow:
 	test -L "$(HOME)/.claude/rules/ruby-rails.md"
 	test -L "$(HOME)/.claude/rules/vue-nuxt.md"
 	test -L "$(HOME)/.claude/skills/dependency-updates/SKILL.md"
-	test -L "$(HOME)/.claude/skills/gh-stack/SKILL.md"
-	test -L "$(HOME)/.claude/skills/gh-stack/references/commands.md"
-	test -L "$(HOME)/.claude/skills/gh-stack/references/stack-design.md"
-	test -L "$(HOME)/.claude/skills/gh-stack/references/troubleshooting.md"
 	test -L "$(XDG_CONFIG_HOME)/zsh/ohmyzsh/custom/themes/robbyrussell-custom.zsh-theme"
 	$(call done)
 
@@ -169,6 +175,12 @@ test-mise-tools:
 	for gem in $${=gems}; do \
 		/opt/homebrew/bin/mise exec -- gem list --installed --exact $$gem >/dev/null || { echo "missing gem: $$gem"; exit 1; }; \
 	done
+	$(call done)
+
+test-gh-tools:
+	$(call log,Testing gh extensions and agent skills)
+	@/opt/homebrew/bin/gh extension list | grep -q "github/gh-stack"
+	@test -f "$(HOME)/.claude/skills/gh-stack/SKILL.md"
 	$(call done)
 
 test-aws-credentials:
